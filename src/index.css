@@ -1,0 +1,200 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Equitan Sans Font Family */
+@font-face {
+  font-family: "Equitan Sans";
+  src: url("./assets/equitan-sans-font/zEquitanSans-Regular.otf")
+    format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Equitan Sans";
+  src: url("./assets/equitan-sans-font/EquitanSans-Italic.otf")
+    format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Equitan Sans";
+  src: url("./assets/equitan-sans-font/EquitanSans-Thin.otf") format("opentype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Equitan Sans";
+  src: url("./assets/equitan-sans-font/EquitanSans-ThinItalic.otf")
+    format("opentype");
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Equitan Sans";
+  src: url("./assets/equitan-sans-font/EquitanSans-ExtraLight.otf")
+    format("opentype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Equitan Sans";
+  src: url("./assets/equitan-sans-font/EquitanSans-ExtraLightItalic.otf")
+    format("opentype");
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Equitan Sans";
+  src: url("./assets/equitan-sans-font/EquitanSans-Light.otf")
+    format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Equitan Sans";
+  src: url("./assets/equitan-sans-font/EquitanSans-LightItalic.otf")
+    format("opentype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Equitan Sans";
+  src: url("./assets/equitan-sans-font/EquitanSans-SemiBold.otf")
+    format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Equitan Sans";
+  src: url("./assets/equitan-sans-font/EquitanSans-SemiBoldItalic.otf")
+    format("opentype");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Equitan Sans";
+  src: url("./assets/equitan-sans-font/EquitanSans-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Equitan Sans";
+  src: url("./assets/equitan-sans-font/EquitanSans-BoldItalic.otf")
+    format("opentype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Equitan Sans";
+  src: url("./assets/equitan-sans-font/EquitanSans-Black.otf")
+    format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Equitan Sans";
+  src: url("./assets/equitan-sans-font/EquitanSans-BlackItalic.otf")
+    format("opentype");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    color-scheme: dark;
+    /* shadcn/ui CSS variables */
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --radius: 0.5rem;
+    --grayz: #666666;
+  }
+  /* Inter Font Family */
+  @font-face {
+    font-family: "Inter";
+    src: url("https://fonts.gstatic.com/s/inter/v12/UcCO3H6m3Fh5sE6Xy3s.woff2")
+      format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Inter";
+    src: url("https://fonts.gstatic.com/s/inter/v12/UcCO3H6m3Fh5sE6Xy3s.woff2")
+      format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* Utility class for Equitan Sans font */
+  .font-equitan {
+    font-family: "Equitan Sans", "Inter", system-ui, -apple-system, sans-serif;
+  }
+
+  html,
+  body,
+  #root {
+    @apply h-full;
+    --grayz: #666666;
+  }
+
+  body {
+    @apply m-0 min-w-80 overflow-hidden bg-background text-foreground;
+  }
+
+  * {
+    @apply border-border;
+  }
+}

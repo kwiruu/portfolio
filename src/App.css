@@ -1,0 +1,20 @@
+@tailwind utilities;
+
+/* Scrollbar styling */
+@layer utilities {
+  ::-webkit-scrollbar {
+    @apply w-2.5;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-white/5;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-purple-500/50 rounded;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-purple-500/70;
+  }
+}
