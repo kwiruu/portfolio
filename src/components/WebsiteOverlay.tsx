@@ -309,7 +309,7 @@ export default function WebsiteOverlay() {
             className="absolute inset-0 flex items-center justify-center"
             style={{ opacity: 0 }}
           >
-            <h2 className="text-4xl font-equitan font-bold text-black">
+            <h2 className="text-4xl font-equitan font-bold text-black font-">
               Hi, I'm Keiru
             </h2>
           </div>

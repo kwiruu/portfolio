@@ -1,5 +1,6 @@
 import { useGLTF } from "@react-three/drei";
 import InteractiveObject from "./InteractiveObject";
+import TrophyCup from "./TrophyCup";
 import CollisionBox from "../components/CollisionBox";
 
 export default function Room() {
@@ -21,39 +22,6 @@ export default function Room() {
       <pointLight position={[0, 2.7, 0.8]} intensity={1} distance={2000} />{" "}
       {/* Your custom 3D room model */}
       <primitive object={scene} scale={1} position={[0, 0, 0]} />
-      {/* Interactive Objects */}
-      <InteractiveObject
-        position={[-3, 0.5, -3]}
-        color="#667eea"
-        objectData={{
-          id: "project1",
-          title: "Project One",
-          content:
-            "This is my first amazing project. Built with React and Three.js, it showcases interactive 3D experiences.",
-        }}
-      />
-      <InteractiveObject
-        position={[3, 0.5, -3]}
-        color="#f093fb"
-        objectData={{
-          id: "project2",
-          title: "Project Two",
-          content:
-            "A revolutionary web application that combines cutting-edge design with powerful functionality.",
-        }}
-      />
-      <InteractiveObject
-        position={[0, 0.5, -5]}
-        color="#4facfe"
-        objectData={{
-          id: "about",
-          title: "About Me",
-          content:
-            "I'm a passionate developer who loves creating immersive web experiences. Let's build something amazing together!",
-        }}
-      />
-      {/* Collision Boxes - Define walls and boundaries */}
-      {/* Set visible={true} to see collision boxes for debugging */}
       {/* North wall */}
       <CollisionBox
         id="wall-north"
@@ -100,6 +68,17 @@ export default function Room() {
         position={[0, 0.5, -5]}
         size={[1, 1, 1]}
         visible={false}
+      />
+      {/* Trophy Cup - Triggers Split Mode */}
+      <TrophyCup
+        position={[5.04, 1.21, 0.44]}
+        scale={0.15}
+        cameraTarget={{
+          // Camera will move to this position (at eye level, looking into the room)
+          position: [2, 1.7, -0.5],
+          // Camera will look at this point in the room
+          lookAt: [70, 15, -20],
+        }}
       />
     </group>
   );

@@ -14,6 +14,7 @@ const SENSITIVITY = 0.002;
 export default function Controls() {
   const { camera, gl } = useThree();
   const exitFPSMode = useStore((state) => state.exitFPSMode);
+  const viewMode = useStore((state) => state.viewMode);
   const checkCollision = useCollisionStore((state) => state.checkCollision);
 
   // Movement state
@@ -26,6 +27,12 @@ export default function Controls() {
 
   const velocity = useRef(new THREE.Vector3());
   const direction = useRef(new THREE.Vector3());
+
+  // Track viewMode in a ref so event listeners can access current value
+  const viewModeRef = useRef(viewMode);
+  useEffect(() => {
+    viewModeRef.current = viewMode;
+  }, [viewMode]);
 
   useEffect(() => {
     // Ensure camera rotation order is YXZ for FPS to avoid gimbal lock
@@ -55,13 +62,20 @@ export default function Controls() {
         console.log("Pointer locked");
       } else {
         console.log("Pointer unlocked");
-        exitFPSMode();
+        // Only exit to website mode if we're still in FPS_MODE
+        // Don't exit if we switched to SPLIT_MODE or VIEWING_OBJECT
+        if (viewModeRef.current === "FPS_MODE") {
+          exitFPSMode();
+        }
       }
     };
 
     const onPointerLockError = () => {
       console.error("Pointer lock error");
-      exitFPSMode();
+      // Only exit if still in FPS_MODE
+      if (viewModeRef.current === "FPS_MODE") {
+        exitFPSMode();
+      }
     };
 
     document.addEventListener("mousemove", onMouseMove);

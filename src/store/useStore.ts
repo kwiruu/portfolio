@@ -1,6 +1,10 @@
 import { create } from "zustand";
 
-export type ViewMode = "WEBSITE_MODE" | "FPS_MODE" | "VIEWING_OBJECT";
+export type ViewMode =
+  | "WEBSITE_MODE"
+  | "FPS_MODE"
+  | "VIEWING_OBJECT"
+  | "SPLIT_MODE";
 
 interface InteractiveObject {
   id: string;
@@ -24,6 +28,8 @@ interface StoreState {
   // Utility actions
   enterFPSMode: () => void;
   exitFPSMode: () => void;
+  enterSplitMode: () => void;
+  exitSplitMode: () => void;
   viewObject: (object: InteractiveObject) => void;
   closeObject: () => void;
 }
@@ -50,6 +56,20 @@ export const useStore = create<StoreState>((set) => ({
     set({
       viewMode: "WEBSITE_MODE",
       isPointerLocked: false,
+    }),
+
+  // Enter split mode (half website, half 3D view)
+  enterSplitMode: () =>
+    set({
+      viewMode: "SPLIT_MODE",
+      isPointerLocked: false,
+    }),
+
+  // Exit split mode back to FPS
+  exitSplitMode: () =>
+    set({
+      viewMode: "FPS_MODE",
+      isPointerLocked: true,
     }),
 
   // View an interactive object
