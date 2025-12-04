@@ -6,6 +6,8 @@ export type ViewMode =
   | "VIEWING_OBJECT"
   | "SPLIT_MODE";
 
+export type SplitModeContent = "certifications" | "projects" | null;
+
 interface InteractiveObject {
   id: string;
   title: string;
@@ -16,6 +18,10 @@ interface StoreState {
   // View mode state
   viewMode: ViewMode;
   setViewMode: (mode: ViewMode) => void;
+
+  // Split mode content type
+  splitModeContent: SplitModeContent;
+  setSplitModeContent: (content: SplitModeContent) => void;
 
   // Active object being viewed
   activeObject: InteractiveObject | null;
@@ -28,7 +34,7 @@ interface StoreState {
   // Utility actions
   enterFPSMode: () => void;
   exitFPSMode: () => void;
-  enterSplitMode: () => void;
+  enterSplitMode: (content: SplitModeContent) => void;
   exitSplitMode: () => void;
   viewObject: (object: InteractiveObject) => void;
   closeObject: () => void;
@@ -37,6 +43,9 @@ interface StoreState {
 export const useStore = create<StoreState>((set) => ({
   viewMode: "WEBSITE_MODE",
   setViewMode: (mode) => set({ viewMode: mode }),
+
+  splitModeContent: null,
+  setSplitModeContent: (content) => set({ splitModeContent: content }),
 
   activeObject: null,
   setActiveObject: (object) => set({ activeObject: object }),
@@ -59,9 +68,10 @@ export const useStore = create<StoreState>((set) => ({
     }),
 
   // Enter split mode (half website, half 3D view)
-  enterSplitMode: () =>
+  enterSplitMode: (content) =>
     set({
       viewMode: "SPLIT_MODE",
+      splitModeContent: content,
       isPointerLocked: false,
     }),
 
@@ -69,6 +79,7 @@ export const useStore = create<StoreState>((set) => ({
   exitSplitMode: () =>
     set({
       viewMode: "FPS_MODE",
+      splitModeContent: null,
       isPointerLocked: true,
     }),
 

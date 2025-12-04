@@ -127,7 +127,7 @@ export default function TrophyCup({
 
         // IMPORTANT: Enter split mode FIRST, then release pointer lock
         // This prevents the Controls onPointerLockChange from triggering exitFPSMode
-        enterSplitMode();
+        enterSplitMode("certifications");
 
         // Now release pointer lock
         if (document.pointerLockElement) {
@@ -173,7 +173,7 @@ export default function TrophyCup({
         const material = child.material as THREE.MeshStandardMaterial;
         if (material.emissive) {
           if (isLookingAt) {
-            material.emissive.setHex(0x555555); // Slight emission to lighten
+            material.emissive.setHex(0x777777); // Slight emission to lighten
           } else {
             material.emissive.setHex(0x000000); // Reset to no emission
           }
@@ -187,6 +187,11 @@ export default function TrophyCup({
       {/* Trophy model - separate ref for raycasting */}
       <group ref={trophyRef}>
         <primitive object={clonedScene} scale={scale} />
+        {/* Invisible hitbox for easier targeting */}
+        <mesh visible={false}>
+          <boxGeometry args={[0.5, 0.8, 0.5]} />
+          <meshBasicMaterial transparent opacity={0} />
+        </mesh>
       </group>
     </group>
   );

@@ -189,6 +189,7 @@ const CERTIFICATIONS = [
 
 export default function SplitModeOverlay() {
   const viewMode = useStore((state) => state.viewMode);
+  const splitModeContent = useStore((state) => state.splitModeContent);
   const exitSplitMode = useStore((state) => state.exitSplitMode);
   const overlayRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -210,7 +211,7 @@ export default function SplitModeOverlay() {
   useEffect(() => {
     if (!overlayRef.current || !contentRef.current) return;
 
-    if (viewMode === "SPLIT_MODE") {
+    if (viewMode === "SPLIT_MODE" && splitModeContent === "certifications") {
       gsap.fromTo(
         overlayRef.current,
         { x: "-100%", opacity: 0 },
@@ -231,10 +232,11 @@ export default function SplitModeOverlay() {
         }
       );
     }
-  }, [viewMode]);
+  }, [viewMode, splitModeContent]);
 
   useEffect(() => {
-    if (viewMode !== "SPLIT_MODE") return;
+    if (viewMode !== "SPLIT_MODE" || splitModeContent !== "certifications")
+      return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === "Escape") {
@@ -244,9 +246,10 @@ export default function SplitModeOverlay() {
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [viewMode, handleClose]);
+  }, [viewMode, splitModeContent, handleClose]);
 
-  if (viewMode !== "SPLIT_MODE") return null;
+  if (viewMode !== "SPLIT_MODE" || splitModeContent !== "certifications")
+    return null;
 
   return (
     <div

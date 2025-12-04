@@ -4,6 +4,7 @@ import WebsiteOverlay from "./components/WebsiteOverlay";
 import ObjectViewer from "./components/ObjectViewer";
 import ControlsInfo from "./components/ControlsInfo";
 import SplitModeOverlay from "./components/SplitModeOverlay";
+import ProjectsOverlay from "./components/ProjectsOverlay";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
 
       {/* Split Mode Overlay (left half with content, right half shows 3D) */}
       <SplitModeOverlay />
+      <ProjectsOverlay />
 
       {/* Object Viewer Modal */}
       <ObjectViewer />

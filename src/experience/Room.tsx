@@ -1,6 +1,7 @@
 import { useGLTF } from "@react-three/drei";
 import InteractiveObject from "./InteractiveObject";
 import TrophyCup from "./TrophyCup";
+import PC from "./PC";
 import CollisionBox from "../components/CollisionBox";
 
 export default function Room() {
@@ -78,6 +79,17 @@ export default function Room() {
           position: [2, 1.7, -0.5],
           // Camera will look at this point in the room
           lookAt: [70, 15, -20],
+        }}
+      />
+      {/* PC - Triggers Projects Split Mode */}
+      <PC
+        position={[2.2, 1.15, -4.5]}
+        scale={1}
+        rotation={[0, 0, 0]}
+        interactionRange={3}
+        cameraTarget={{
+          position: [2, 1.7, -2.5],
+          lookAt: [0, 1, -6],
         }}
       />
     </group>
