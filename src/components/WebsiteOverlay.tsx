@@ -3,6 +3,8 @@ import { useStore } from "../store/useStore";
 import gsap from "gsap";
 import { Canvas } from "@react-three/fiber";
 import { useGLTF, Environment } from "@react-three/drei";
+const KING_PIECE_MODEL = new URL("../assets/king-piece.glb", import.meta.url)
+  .href;
 import * as THREE from "three";
 
 import KLogo from "../assets/k-logo.svg";
@@ -20,7 +22,7 @@ function KingPiece({
   startIntro?: boolean;
   onExit?: () => void;
 }) {
-  const { scene } = useGLTF("/src/assets/king-piece.glb");
+  const { scene } = useGLTF(KING_PIECE_MODEL);
   const meshRef = useRef<THREE.Group>(null);
   const [hasPlayedIntro, setHasPlayedIntro] = useState(false);
 
@@ -439,4 +441,4 @@ export default function WebsiteOverlay() {
   );
 }
 
-useGLTF.preload("/src/assets/king-piece.glb");
+useGLTF.preload(KING_PIECE_MODEL);

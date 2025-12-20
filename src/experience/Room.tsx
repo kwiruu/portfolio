@@ -1,4 +1,5 @@
 import { useGLTF } from "@react-three/drei";
+import { useMemo } from "react";
 import TrophyCup from "./TrophyCup";
 import PC from "./PC";
 import PictureFrame from "./PictureFrame";
@@ -7,9 +8,16 @@ import CollisionBox from "../components/CollisionBox";
 
 export default function Room() {
   // Load your 3D room model
-  const { scene } = useGLTF(
-    "/src/assets/vr_apartment_loft_interior__baked.glb"
+  const roomModel = useMemo(
+    () =>
+      new URL(
+        "../assets/vr_apartment_loft_interior__baked.glb",
+        import.meta.url
+      ).href,
+    []
   );
+
+  const { scene } = useGLTF(roomModel);
 
   return (
     <group>
@@ -151,4 +159,7 @@ export default function Room() {
 }
 
 // Preload the model for better performance
-useGLTF.preload("/src/assets/vr_apartment_loft_interior__baked.glb");
+useGLTF.preload(
+  new URL("../assets/vr_apartment_loft_interior__baked.glb", import.meta.url)
+    .href
+);

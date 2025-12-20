@@ -1,6 +1,8 @@
 import { useRef, useState, useEffect, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
+
+const PC_MODEL = new URL("../assets/pc.glb", import.meta.url).href;
 import { useStore } from "../store/useStore";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -31,7 +33,7 @@ export default function PC({
   interactionRange = 2.5,
   cameraTarget = DEFAULT_CAMERA_TARGET,
 }: PCProps) {
-  const { scene } = useGLTF("/src/assets/pc.glb");
+  const { scene } = useGLTF(PC_MODEL);
   const groupRef = useRef<THREE.Group>(null);
   const pcRef = useRef<THREE.Group>(null);
   const [isLookingAt, setIsLookingAt] = useState(false);
@@ -209,4 +211,4 @@ export default function PC({
 }
 
 // Preload the PC model
-useGLTF.preload("/src/assets/pc.glb");
+useGLTF.preload(PC_MODEL);

@@ -1,6 +1,11 @@
 import { useRef, useState, useEffect, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
+
+const PICTURE_FRAME_MODEL = new URL(
+  "../assets/picture-frame.glb",
+  import.meta.url
+).href;
 import { useStore } from "../store/useStore";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -31,7 +36,7 @@ export default function PictureFrame({
   interactionRange = 2.5,
   cameraTarget = DEFAULT_CAMERA_TARGET,
 }: PictureFrameProps) {
-  const { scene } = useGLTF("/src/assets/picture-frame.glb");
+  const { scene } = useGLTF(PICTURE_FRAME_MODEL);
   const groupRef = useRef<THREE.Group>(null);
   const frameRef = useRef<THREE.Group>(null);
   const [isLookingAt, setIsLookingAt] = useState(false);
@@ -215,4 +220,4 @@ export default function PictureFrame({
 }
 
 // Preload the picture frame model
-useGLTF.preload("/src/assets/picture-frame.glb");
+useGLTF.preload(PICTURE_FRAME_MODEL);

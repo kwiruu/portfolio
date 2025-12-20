@@ -1,6 +1,8 @@
 import { useRef, useState, useEffect, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
+
+const TROPHY_MODEL = new URL("../assets/trophycup.glb", import.meta.url).href;
 import { useStore } from "../store/useStore";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -29,7 +31,7 @@ export default function TrophyCup({
   interactionRange = 2.5,
   cameraTarget = DEFAULT_CAMERA_TARGET,
 }: TrophyCupProps) {
-  const { scene } = useGLTF("/src/assets/trophycup.glb");
+  const { scene } = useGLTF(TROPHY_MODEL);
   const groupRef = useRef<THREE.Group>(null);
   const trophyRef = useRef<THREE.Group>(null);
   const [isLookingAt, setIsLookingAt] = useState(false);
@@ -214,4 +216,4 @@ export default function TrophyCup({
 }
 
 // Preload the trophy model
-useGLTF.preload("/src/assets/trophycup.glb");
+useGLTF.preload(TROPHY_MODEL);

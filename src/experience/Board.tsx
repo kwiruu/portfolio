@@ -1,6 +1,8 @@
 import { useRef, useState, useEffect, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
+
+const BOARD_MODEL = new URL("../assets/board.glb", import.meta.url).href;
 import { useStore } from "../store/useStore";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -31,7 +33,7 @@ export default function Board({
   interactionRange = 2.5,
   cameraTarget = DEFAULT_CAMERA_TARGET,
 }: BoardProps) {
-  const { scene } = useGLTF("/src/assets/board.glb");
+  const { scene } = useGLTF(BOARD_MODEL);
   const groupRef = useRef<THREE.Group>(null);
   const boardRef = useRef<THREE.Group>(null);
   const [isLookingAt, setIsLookingAt] = useState(false);
@@ -215,4 +217,4 @@ export default function Board({
 }
 
 // Preload the board model
-useGLTF.preload("/src/assets/board.glb");
+useGLTF.preload(BOARD_MODEL);
