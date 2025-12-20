@@ -482,7 +482,7 @@ function ProjectCard({ project }: { project: Project }) {
                     className="w-full cursor-pointer group"
                   >
                     <img
-                      src={`/src/assets/projectImages/${project.images[0]}`}
+                      src={`/projectImages/${project.images[0]}`}
                       alt={project.title}
                       className="w-full h-auto object-contain rounded-lg border border-neutral-200 shadow-sm group-hover:opacity-90 transition-opacity"
                     />
@@ -499,7 +499,7 @@ function ProjectCard({ project }: { project: Project }) {
                         className="cursor-pointer group overflow-hidden h-full"
                       >
                         <img
-                          src={`/src/assets/projectImages/${img}`}
+                          src={`/projectImages/${img}`}
                           alt={`${project.title} - ${index + 1}`}
                           className="w-full h-full object-cover rounded-lg border border-neutral-200 shadow-sm group-hover:opacity-90 transition-opacity"
                         />
@@ -517,7 +517,7 @@ function ProjectCard({ project }: { project: Project }) {
                       className="row-span-2 cursor-pointer group overflow-hidden h-full"
                     >
                       <img
-                        src={`/src/assets/projectImages/${project.images[0]}`}
+                        src={`/projectImages/${project.images[0]}`}
                         alt={`${project.title} - 1`}
                         className="w-full h-full object-cover rounded-lg border border-neutral-200 shadow-sm group-hover:opacity-90 transition-opacity"
                       />
@@ -529,7 +529,7 @@ function ProjectCard({ project }: { project: Project }) {
                       className="cursor-pointer group overflow-hidden h-full"
                     >
                       <img
-                        src={`/src/assets/projectImages/${project.images[1]}`}
+                        src={`/projectImages/${project.images[1]}`}
                         alt={`${project.title} - 2`}
                         className="w-full h-full object-cover rounded-lg border border-neutral-200 shadow-sm group-hover:opacity-90 transition-opacity"
                       />
@@ -541,7 +541,7 @@ function ProjectCard({ project }: { project: Project }) {
                       className="cursor-pointer group overflow-hidden h-full"
                     >
                       <img
-                        src={`/src/assets/projectImages/${project.images[2]}`}
+                        src={`/projectImages/${project.images[2]}`}
                         alt={`${project.title} - 3`}
                         className="w-full h-full object-cover rounded-lg border border-neutral-200 shadow-sm group-hover:opacity-90 transition-opacity"
                       />
@@ -558,7 +558,7 @@ function ProjectCard({ project }: { project: Project }) {
                       className="cursor-pointer group overflow-hidden h-full"
                     >
                       <img
-                        src={`/src/assets/projectImages/${project.images[0]}`}
+                        src={`/projectImages/${project.images[0]}`}
                         alt={`${project.title} - 1`}
                         className="w-full h-full object-cover rounded-lg border border-neutral-200 shadow-sm group-hover:opacity-90 transition-opacity"
                       />
@@ -570,7 +570,7 @@ function ProjectCard({ project }: { project: Project }) {
                       className="cursor-pointer group overflow-hidden h-full"
                     >
                       <img
-                        src={`/src/assets/projectImages/${project.images[1]}`}
+                        src={`/projectImages/${project.images[1]}`}
                         alt={`${project.title} - 2`}
                         className="w-full h-full object-cover rounded-lg border border-neutral-200 shadow-sm group-hover:opacity-90 transition-opacity"
                       />
@@ -582,7 +582,7 @@ function ProjectCard({ project }: { project: Project }) {
                       className="cursor-pointer group overflow-hidden h-full"
                     >
                       <img
-                        src={`/src/assets/projectImages/${project.images[2]}`}
+                        src={`/projectImages/${project.images[2]}`}
                         alt={`${project.title} - 3`}
                         className="w-full h-full object-cover rounded-lg border border-neutral-200 shadow-sm group-hover:opacity-90 transition-opacity"
                       />
@@ -594,7 +594,7 @@ function ProjectCard({ project }: { project: Project }) {
                       className="relative cursor-pointer group overflow-hidden h-full"
                     >
                       <img
-                        src={`/src/assets/projectImages/${project.images[3]}`}
+                        src={`/projectImages/${project.images[3]}`}
                         alt={`${project.title} - 4`}
                         className="w-full h-full object-cover rounded-lg border border-neutral-200 shadow-sm group-hover:opacity-90 transition-opacity"
                       />
@@ -697,7 +697,7 @@ function ProjectCard({ project }: { project: Project }) {
                   onClick={(e) => e.stopPropagation()}
                 >
                   <img
-                    src={`/src/assets/projectImages/${project.images[currentImageIndex]}`}
+                    src={`/projectImages/${project.images[currentImageIndex]}`}
                     alt={`${project.title} - Image ${currentImageIndex + 1}`}
                     className="max-h-[90vh] max-w-full object-contain"
                   />

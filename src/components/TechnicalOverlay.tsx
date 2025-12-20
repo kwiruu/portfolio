@@ -1,6 +1,9 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import { useStore } from "../store/useStore";
 import gsap from "gsap";
+import jobtargetLogo from "../assets/education/jobtarget.png";
+import keirulogo from  "../assets/k-logo.svg";
+import citulogo from "../assets/education/citlogo.png";
 import {
   Tooltip,
   TooltipContent,
@@ -15,18 +18,45 @@ const TECH_ICONS: Record<string, string> = {
   TypeScript: "https://cdn.simpleicons.org/typescript",
   Python: "https://cdn.simpleicons.org/python",
   Java: "https://cdn.simpleicons.org/openjdk",
+  "C#": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Logo_C_sharp.svg",
   "C++": "https://cdn.simpleicons.org/cplusplus",
   C: "https://cdn.simpleicons.org/c",
   PHP: "https://cdn.simpleicons.org/php",
+  "ASP.NET": "https://cdn.simpleicons.org/dotnet",
+  Django: "https://cdn.simpleicons.org/django",
+  SQLite: "https://cdn.simpleicons.org/sqlite",
   SQL: "https://cdn.simpleicons.org/mysql",
   Bash: "https://cdn.simpleicons.org/gnubash",
+  Firebase: "https://cdn.simpleicons.org/firebase",
+  Supabase: "https://cdn.simpleicons.org/supabase",
+  TensorFlow: "https://cdn.simpleicons.org/tensorflow",
+  PyTorch: "https://cdn.simpleicons.org/pytorch",
+  Pandas: "https://cdn.simpleicons.org/pandas",
+  "Oracle Cloud Infrastructure":
+    "https://logos-api.apistemic.com/domain:oracle.com",
+  Android: "https://cdn.simpleicons.org/android",
+  "React Native": "https://cdn.simpleicons.org/react",
+  Babel: "https://cdn.simpleicons.org/babel",
+  Jest: "https://cdn.simpleicons.org/jest",
+  "Adobe Photoshop":
+    "https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg",
+  "Adobe Premiere Pro":
+    "https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg",
+  Blender: "https://cdn.simpleicons.org/blender",
+  Godot: "https://cdn.simpleicons.org/godotengine",
+  Unity:
+    "https://upload.wikimedia.org/wikipedia/commons/c/c6/Unity_Hub_Logo.png",
+  Windows:
+    "https://upload.wikimedia.org/wikipedia/commons/8/87/Windows_logo_-_2021.svg",
+  Ubuntu: "https://cdn.simpleicons.org/ubuntu",
+  "Arch Linux": "https://cdn.simpleicons.org/archlinux",
   // Frontend
   React: "https://cdn.simpleicons.org/react",
   "Next.js": "https://cdn.simpleicons.org/nextdotjs",
   "Vue.js": "https://cdn.simpleicons.org/vuedotjs",
   "Tailwind CSS": "https://cdn.simpleicons.org/tailwindcss",
   HTML5: "https://cdn.simpleicons.org/html5",
-  CSS3: "https://cdn.simpleicons.org/css3",
+  CSS3: "https://upload.wikimedia.org/wikipedia/commons/6/62/CSS3_logo.svg",
   Bootstrap: "https://cdn.simpleicons.org/bootstrap",
   "Three.js": "https://cdn.simpleicons.org/threedotjs",
   // Backend
@@ -40,8 +70,9 @@ const TECH_ICONS: Record<string, string> = {
   MySQL: "https://cdn.simpleicons.org/mysql",
   Redis: "https://cdn.simpleicons.org/redis",
   // Cloud & DevOps
-  AWS: "https://cdn.simpleicons.org/amazonwebservices",
-  Azure: "https://cdn.simpleicons.org/microsoftazure",
+  AWS: "https://logos-api.apistemic.com/linkedin:amazon",
+  Azure:
+    "https://upload.wikimedia.org/wikipedia/commons/f/fa/Microsoft_Azure.svg",
   GCP: "https://cdn.simpleicons.org/googlecloud",
   Docker: "https://cdn.simpleicons.org/docker",
   Kubernetes: "https://cdn.simpleicons.org/kubernetes",
@@ -49,7 +80,7 @@ const TECH_ICONS: Record<string, string> = {
   Git: "https://cdn.simpleicons.org/git",
   GitHub: "https://cdn.simpleicons.org/github",
   // Tools
-  "VS Code": "https://cdn.simpleicons.org/visualstudiocode",
+  "VS Code": "https://logos-api.apistemic.com/domain:visualstudio.com",
   Figma: "https://cdn.simpleicons.org/figma",
   Postman: "https://cdn.simpleicons.org/postman",
   Vite: "https://cdn.simpleicons.org/vite",
@@ -61,17 +92,30 @@ const TECH_ICONS: Record<string, string> = {
 
 // Skills with proficiency levels
 const SKILLS_DATA = {
+  languages: [
+    { name: "C", level: 70 },
+    { name: "C++", level: 70 },
+    { name: "C#", level: 65 },
+    { name: "PHP", level: 75 },
+    { name: "Java", level: 80 },
+    { name: "Python", level: 85 },
+    { name: "JavaScript", level: 90 },
+  ],
   frontend: [
     { name: "React", level: 90 },
     { name: "TypeScript", level: 85 },
     { name: "Tailwind CSS", level: 90 },
     { name: "Next.js", level: 75 },
     { name: "Three.js", level: 70 },
+    { name: "Vue.js", level: 80 },
+    { name: "React Native", level: 70 },
   ],
   backend: [
     { name: "Node.js", level: 85 },
     { name: "Express.js", level: 80 },
     { name: "NestJS", level: 70 },
+    { name: "Django", level: 70 },
+    { name: "ASP.NET", level: 65 },
     { name: "Python", level: 75 },
     { name: "REST APIs", level: 85 },
   ],
@@ -79,14 +123,45 @@ const SKILLS_DATA = {
     { name: "MongoDB", level: 80 },
     { name: "PostgreSQL", level: 75 },
     { name: "MySQL", level: 70 },
-    { name: "Redis", level: 60 },
+    { name: "SQLite", level: 65 },
   ],
   cloud: [
     { name: "AWS", level: 70 },
     { name: "Azure", level: 75 },
     { name: "GCP", level: 65 },
-    { name: "Docker", level: 75 },
-    { name: "Kubernetes", level: 65 },
+    { name: "Oracle Cloud Infrastructure", level: 60 },
+    { name: "Firebase", level: 75 },
+    { name: "Supabase", level: 70 },
+    { name: "Docker", level: 80 },
+  ],
+  aiMl: [
+    { name: "TensorFlow", level: 65 },
+    { name: "PyTorch", level: 60 },
+    { name: "Pandas", level: 75 },
+  ],
+  tools: [
+    { name: "Git", level: 85 },
+    { name: "GitHub", level: 85 },
+    { name: "Jest", level: 70 },
+    { name: "Postman", level: 80 },
+    { name: "Vite", level: 75 },
+    { name: "ESLint", level: 75 },
+    { name: "Prettier", level: 75 },
+  ],
+  design: [
+    { name: "Figma", level: 85 },
+    { name: "Adobe Photoshop", level: 70 },
+    { name: "Adobe Premiere Pro", level: 65 },
+    { name: "Blender", level: 70 },
+  ],
+  gameEngines: [
+    { name: "Unity", level: 65 },
+    { name: "Godot", level: 60 },
+  ],
+  operatingSystems: [
+    { name: "Windows", level: 90 },
+    { name: "Ubuntu", level: 80 },
+    { name: "Arch Linux", level: 70 },
   ],
 };
 
@@ -95,12 +170,13 @@ const EXPERIENCE_DATA = [
   {
     id: "exp-1",
     role: "Software Developer Intern",
-    company: "Tech Company",
-    period: "Jun 2024 - Present",
+    company: "Talleco JobTarget Inc.",
+    period: "May 2025 - Oct 2025",
     description:
-      "Developing full-stack web applications using React, Node.js, and cloud services. Collaborating with cross-functional teams to deliver high-quality software solutions.",
-    technologies: ["React", "Node.js", "AWS", "MongoDB"],
+      "Developing full-stack web applications using React, NestJS, Jira, and cloud services. Collaborating with cross-functional teams to deliver high-quality software solutions.",
+    technologies: ["React", "NestJS", "Jira", "PostgreSQL", "TypeScript"],
     type: "work",
+    logo: jobtargetLogo,
   },
   {
     id: "exp-2",
@@ -109,18 +185,20 @@ const EXPERIENCE_DATA = [
     period: "Jan 2023 - Present",
     description:
       "Building custom websites and web applications for clients. Focusing on responsive design, performance optimization, and modern development practices.",
-    technologies: ["React", "Tailwind CSS", "Next.js", "TypeScript"],
+    technologies: ["React", "Tailwind CSS", "NestJS", "TypeScript"],
     type: "freelance",
+    logo: keirulogo,
   },
   {
     id: "exp-3",
     role: "CS Student Developer",
     company: "CIT-U",
-    period: "2021 - Present",
+    period: "2021 - 2026",
     description:
       "Developing academic projects and participating in hackathons. Learning and applying software engineering principles in real-world scenarios.",
     technologies: ["Java", "Python", "C++", "JavaScript"],
     type: "education",
+    logo: citulogo,
   },
 ];
 
@@ -146,10 +224,23 @@ const TECH_STACKS = {
     "Tailwind CSS",
     "Bootstrap",
     "Three.js",
+    "React Native",
+    "Android",
+    "Babel",
   ],
-  backend: ["Node.js", "Express.js", "NestJS", "FastAPI"],
-  databases: ["MongoDB", "PostgreSQL", "MySQL", "Redis"],
-  cloud: ["AWS", "Azure", "GCP", "Docker", "Kubernetes", "Linux"],
+  backend: ["Node.js", "Express.js", "NestJS", "FastAPI", "Django", "ASP.NET"],
+  databases: ["MongoDB", "PostgreSQL", "MySQL", "SQLite", "Redis"],
+  cloud: [
+    "AWS",
+    "Azure",
+    "GCP",
+    "Oracle Cloud Infrastructure",
+    "Firebase",
+    "Supabase",
+    "Docker",
+    "Kubernetes",
+    "Linux",
+  ],
   tools: [
     "Git",
     "GitHub",
@@ -160,6 +251,18 @@ const TECH_STACKS = {
     "npm",
     "ESLint",
     "Prettier",
+    "Jest",
+    "TensorFlow",
+    "PyTorch",
+    "Pandas",
+    "Adobe Photoshop",
+    "Adobe Premiere Pro",
+    "Blender",
+    "Godot",
+    "Unity",
+    "Windows",
+    "Ubuntu",
+    "Arch Linux",
   ],
 };
 
@@ -192,9 +295,14 @@ function SkillItem({ name, level }: { name: string; level: number }) {
               isHovered ? "w-auto opacity-100" : "w-0 opacity-0"
             }`}
           >
-            <span className="text-xs text-neutral-500 font-equitan whitespace-nowrap">
-              {level}% Proficient
-            </span>
+            <div className="flex flex-col leading-tight">
+              <span className="text-xl font-semibold text-neutral-800 font-equitan">
+                {level}%
+              </span>
+              <span className="text-[11px] text-neutral-500 font-equitan">
+                Proficient
+              </span>
+            </div>
           </div>
         </div>
       </TooltipTrigger>
@@ -237,6 +345,7 @@ function ExperienceCard({
   description,
   technologies,
   type,
+  logo,
 }: {
   role: string;
   company: string;
@@ -244,6 +353,7 @@ function ExperienceCard({
   description: string;
   technologies: string[];
   type: string;
+  logo?: string;
 }) {
   const typeColors: Record<string, string> = {
     work: "bg-blue-100 text-blue-700",
@@ -254,11 +364,23 @@ function ExperienceCard({
   return (
     <div className="bg-white rounded-xl p-5 border border-neutral-200 hover:border-neutral-300 transition-all hover:shadow-sm">
       <div className="flex items-start justify-between mb-3">
-        <div>
-          <h3 className="text-base font-bold text-neutral-900 font-equitan">
-            {role}
-          </h3>
-          <p className="text-sm text-neutral-500 font-equitan">{company}</p>
+        <div className="flex items-center gap-3">
+          {logo && (
+            <div className="w-12 h-12 rounded-lg border border-neutral-200 bg-neutral-50 flex items-center justify-center overflow-hidden p-1">
+              <img
+                src={logo}
+                alt={`${company} logo`}
+                className="w-full h-full object-contain"
+                loading="lazy"
+              />
+            </div>
+          )}
+          <div>
+            <h3 className="text-base font-bold text-neutral-900 font-equitan">
+              {role}
+            </h3>
+            <p className="text-sm text-neutral-500 font-equitan">{company}</p>
+          </div>
         </div>
         <div className="flex flex-col items-end gap-1">
           <span
@@ -433,7 +555,7 @@ export default function TechnicalOverlay() {
           <div className="flex gap-10 mb-6 animate-in pb-6 border-b border-neutral-200">
             <div>
               <p className="text-3xl font-bold text-neutral-900 font-equitan">
-                20+
+                50+
               </p>
               <p className="text-sm font-light text-neutral-400 font-equitan">
                 Technologies
@@ -441,7 +563,7 @@ export default function TechnicalOverlay() {
             </div>
             <div>
               <p className="text-3xl font-bold text-neutral-400 font-equitan">
-                5
+                4
               </p>
               <p className="text-sm font-light text-neutral-400 font-equitan">
                 Cloud Platforms
@@ -550,6 +672,23 @@ export default function TechnicalOverlay() {
             {/* Skills Tab */}
             {activeTab === "skills" && (
               <div className="space-y-6">
+                {/* Programming Languages */}
+                <div>
+                  <h3 className="text-sm font-bold text-neutral-900 font-equitan mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    Programming Languages
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {SKILLS_DATA.languages.map((skill) => (
+                      <SkillItem
+                        key={skill.name}
+                        name={skill.name}
+                        level={skill.level}
+                      />
+                    ))}
+                  </div>
+                </div>
+
                 {/* Frontend Skills */}
                 <div>
                   <h3 className="text-sm font-bold text-neutral-900 font-equitan mb-3 flex items-center gap-2">
@@ -617,6 +756,91 @@ export default function TechnicalOverlay() {
                     ))}
                   </div>
                 </div>
+
+                {/* AI / ML & Data */}
+                <div>
+                  <h3 className="text-sm font-bold text-neutral-900 font-equitan mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-pink-500" />
+                    AI / ML & Data
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {SKILLS_DATA.aiMl.map((skill) => (
+                      <SkillItem
+                        key={skill.name}
+                        name={skill.name}
+                        level={skill.level}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Tools & Testing */}
+                <div>
+                  <h3 className="text-sm font-bold text-neutral-900 font-equitan mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-gray-500" />
+                    Tools & Testing
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {SKILLS_DATA.tools.map((skill) => (
+                      <SkillItem
+                        key={skill.name}
+                        name={skill.name}
+                        level={skill.level}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Design & Media */}
+                <div>
+                  <h3 className="text-sm font-bold text-neutral-900 font-equitan mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-teal-500" />
+                    Design & Media
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {SKILLS_DATA.design.map((skill) => (
+                      <SkillItem
+                        key={skill.name}
+                        name={skill.name}
+                        level={skill.level}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Game Engines */}
+                <div>
+                  <h3 className="text-sm font-bold text-neutral-900 font-equitan mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-indigo-500" />
+                    Game Engines
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {SKILLS_DATA.gameEngines.map((skill) => (
+                      <SkillItem
+                        key={skill.name}
+                        name={skill.name}
+                        level={skill.level}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Operating Systems */}
+                <div>
+                  <h3 className="text-sm font-bold text-neutral-900 font-equitan mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-slate-500" />
+                    Operating Systems
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {SKILLS_DATA.operatingSystems.map((skill) => (
+                      <SkillItem
+                        key={skill.name}
+                        name={skill.name}
+                        level={skill.level}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
 
@@ -632,6 +856,7 @@ export default function TechnicalOverlay() {
                     description={exp.description}
                     technologies={exp.technologies}
                     type={exp.type}
+                    logo={exp.logo}
                   />
                 ))}
               </div>
@@ -646,6 +871,21 @@ export default function TechnicalOverlay() {
                     Skills
                   </h2>
                   <div className="space-y-4">
+                    <div>
+                      <h3 className="text-sm font-bold text-neutral-900 font-equitan mb-3 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-amber-500" />
+                        Programming Languages
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {SKILLS_DATA.languages.map((skill) => (
+                          <SkillItem
+                            key={skill.name}
+                            name={skill.name}
+                            level={skill.level}
+                          />
+                        ))}
+                      </div>
+                    </div>
                     <div>
                       <h3 className="text-sm font-bold text-neutral-900 font-equitan mb-3 flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-blue-500" />
@@ -706,6 +946,81 @@ export default function TechnicalOverlay() {
                         ))}
                       </div>
                     </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-neutral-900 font-equitan mb-3 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-pink-500" />
+                        AI / ML & Data
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {SKILLS_DATA.aiMl.map((skill) => (
+                          <SkillItem
+                            key={skill.name}
+                            name={skill.name}
+                            level={skill.level}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-neutral-900 font-equitan mb-3 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-gray-500" />
+                        Tools & Testing
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {SKILLS_DATA.tools.map((skill) => (
+                          <SkillItem
+                            key={skill.name}
+                            name={skill.name}
+                            level={skill.level}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-neutral-900 font-equitan mb-3 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-teal-500" />
+                        Design & Media
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {SKILLS_DATA.design.map((skill) => (
+                          <SkillItem
+                            key={skill.name}
+                            name={skill.name}
+                            level={skill.level}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-neutral-900 font-equitan mb-3 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-indigo-500" />
+                        Game Engines
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {SKILLS_DATA.gameEngines.map((skill) => (
+                          <SkillItem
+                            key={skill.name}
+                            name={skill.name}
+                            level={skill.level}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-neutral-900 font-equitan mb-3 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-slate-500" />
+                        Operating Systems
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {SKILLS_DATA.operatingSystems.map((skill) => (
+                          <SkillItem
+                            key={skill.name}
+                            name={skill.name}
+                            level={skill.level}
+                          />
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -724,6 +1039,7 @@ export default function TechnicalOverlay() {
                         description={exp.description}
                         technologies={exp.technologies}
                         type={exp.type}
+                        logo={exp.logo}
                       />
                     ))}
                   </div>

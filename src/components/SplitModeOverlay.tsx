@@ -8,6 +8,8 @@ import azureCert from "../assets/certificateImages/azure.png";
 import oracleCert from "../assets/certificateImages/oracle.png";
 import linuxCert from "../assets/certificateImages/linux.png";
 import udemyCert from "../assets/certificateImages/udemy.png";
+import awsar from "../assets/certificateImages/awsar.png";
+import awsf from "../assets/certificateImages/awsf.png";
 
 // Company logo URLs (using official brand CDNs/URLs)
 const LOGOS = {
@@ -35,6 +37,19 @@ const LOGOS = {
 // Certification data
 const CERTIFICATIONS = [
   {
+    id: "azure",
+    title: "AZURE FUNDAMENTALS",
+    shortTitle: "AZ-900",
+    issuer: "MICROSOFT",
+    date: "MAR 2025",
+    logo: LOGOS.microsoft,
+    skills: ["Azure", "SaaS", "IaaS", "PaaS"],
+    credentialId: "4EACDBD230361567",
+    credentialUrl:
+      "https://learn.microsoft.com/api/credentials/share/en-us/4EACDBD230361567",
+    certificateImage: azureCert,
+  },
+  {
     id: "isc2-cc",
     title: "CERTIFIED IN CYBERSECURITY",
     shortTitle: "CC",
@@ -57,6 +72,24 @@ const CERTIFICATIONS = [
     skills: ["Cloud Computing", "AWS", "EC2", "S3"],
     credentialUrl:
       "https://www.credly.com/badges/6cc9deaf-c8f7-4225-924d-7191b5c7b9d9/linked_in_profile",
+    certificateImage: awsf,
+  },
+  {
+    id: "aws",
+    title: "CLOUD ARCHITECTING",
+    shortTitle: "AWS",
+    issuer: "AMAZON WEB SERVICES",
+    date: "SEP 2025",
+    logo: LOGOS.aws,
+    skills: [
+      "Architecting Solutions On AWS",
+      "AWS",
+      "EC2",
+      "Building Infrastructure On AWS",
+    ],
+    credentialUrl:
+      "https://www.credly.com/badges/c79911b1-1b39-47de-8c8f-fa2a4f79300b",
+    certificateImage: awsar,
   },
   {
     id: "oracle",
@@ -70,19 +103,6 @@ const CERTIFICATIONS = [
     credentialUrl:
       "https://catalog-education.oracle.com/pls/certview/sharebadge?id=322515041OCI25FNDCFA",
     certificateImage: oracleCert,
-  },
-  {
-    id: "azure",
-    title: "AZURE FUNDAMENTALS",
-    shortTitle: "AZ-900",
-    issuer: "MICROSOFT",
-    date: "MAR 2025",
-    logo: LOGOS.microsoft,
-    skills: ["Azure", "SaaS", "IaaS", "PaaS"],
-    credentialId: "4EACDBD230361567",
-    credentialUrl:
-      "https://learn.microsoft.com/api/credentials/share/en-us/4EACDBD230361567",
-    certificateImage: azureCert,
   },
   {
     id: "gcp-essentials",
@@ -288,7 +308,7 @@ export default function SplitModeOverlay() {
         <div className="flex gap-10 mb-2 animate-in pb-8 border-b border-neutral-200">
           <div>
             <p className="text-3xl font-bold text-neutral-900 font-equitan">
-              14+
+              15+
             </p>
             <p className="text-sm font-light text-neutral-400 font-equitan">
               Certifications
