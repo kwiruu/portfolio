@@ -1,7 +1,8 @@
 import { useGLTF } from "@react-three/drei";
-import InteractiveObject from "./InteractiveObject";
 import TrophyCup from "./TrophyCup";
 import PC from "./PC";
+import PictureFrame from "./PictureFrame";
+import Board from "./Board";
 import CollisionBox from "../components/CollisionBox";
 
 export default function Room() {
@@ -51,23 +52,54 @@ export default function Room() {
         size={[0.5, 3, 20]}
         visible={false}
       />
-      {/* Example: Collision boxes around interactive objects */}
+      {/* Objects */}
       <CollisionBox
-        id="object-project1"
-        position={[-3, 0.5, -3]}
-        size={[1, 1, 1]}
+        id="pc-table"
+        position={[2.3, 1, -4.4]}
+        size={[3, 2, 0.4]}
         visible={false}
       />
       <CollisionBox
-        id="object-project2"
-        position={[3, 0.5, -3]}
-        size={[1, 1, 1]}
+        id="pc-chair"
+        position={[1.5, 1, -3.1]}
+        size={[0.6, 2, 0.3]}
         visible={false}
       />
       <CollisionBox
-        id="object-about"
-        position={[0, 0.5, -5]}
-        size={[1, 1, 1]}
+        id="plant"
+        position={[4.8, 1, -4.6]}
+        size={[0.3, 2, 0.3]}
+        visible={false}
+      />
+      <CollisionBox
+        id="certificate-table"
+        position={[4.8, 1, 0.5]}
+        size={[0.6, 2, 2]}
+        visible={false}
+      />
+      <CollisionBox
+        id="shelf"
+        position={[3.8, 1, 2.7]}
+        size={[1.3, 2, 0.2]}
+        visible={false}
+      />
+      <CollisionBox
+        id="sofa"
+        position={[-0.2, 1, 0.5]}
+        size={[1, 2, 1]}
+        visible={false}
+      />
+      <CollisionBox
+        id="coffee-table"
+        position={[0.3, 1, 1.7]}
+        size={[0.2, 2, 0.2]}
+        visible={false}
+      />
+      <CollisionBox
+        id="white-board"
+        position={[-1.45, 1, -2.75]}
+        size={[2.3, 2, 0.2]}
+        rotation={[0, 1.1, 0]}
         visible={false}
       />
       {/* Trophy Cup - Triggers Split Mode */}
@@ -90,6 +122,28 @@ export default function Room() {
         cameraTarget={{
           position: [2, 1.7, -2.5],
           lookAt: [0, 1, -6],
+        }}
+      />
+      {/* Picture Frame - Triggers About Split Mode */}
+      <PictureFrame
+        position={[0.3, 0.7, 1.8]}
+        scale={0.5}
+        rotation={[0, 5.5, 0]}
+        interactionRange={2.5}
+        cameraTarget={{
+          position: [1.6, 1.7, 1.5],
+          lookAt: [0.3, 0.5, 2.8],
+        }}
+      />
+      {/* Board - Triggers Technical Split Mode */}
+      <Board
+        position={[-1.4, 1.1, -2.7]}
+        scale={0.8}
+        rotation={[0, 1.15, 0]}
+        interactionRange={3}
+        cameraTarget={{
+          position: [0, 1.7, -1.5],
+          lookAt: [-2.5, 2, -1.7],
         }}
       />
     </group>

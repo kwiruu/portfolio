@@ -112,8 +112,11 @@ function KingPiece({
 }
 
 export default function WebsiteOverlay() {
+  const DEV_MODE = import.meta.env.VITE_DEV_MODE === "true";
   const viewMode = useStore((state) => state.viewMode);
+  const startTour = useStore((state) => state.startTour);
   const enterFPSMode = useStore((state) => state.enterFPSMode);
+  const hasPlayedTour = useStore((state) => state.hasPlayedTour);
   const overlayRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
   const text1Ref = useRef<HTMLDivElement>(null);
@@ -128,6 +131,21 @@ export default function WebsiteOverlay() {
   const kingPieceRef = useRef<THREE.Group & { exitAnimation?: () => void }>(
     null
   );
+  const devAutoStartRef = useRef(false);
+
+  // If DEV_MODE is true, skip website overlay and start tour/FPS immediately
+  useEffect(() => {
+    if (!DEV_MODE) return;
+    if (devAutoStartRef.current) return;
+    devAutoStartRef.current = true;
+
+    // If tour already played once, jump straight to FPS; else run tour
+    if (hasPlayedTour) {
+      enterFPSMode();
+    } else {
+      startTour();
+    }
+  }, [DEV_MODE, hasPlayedTour, enterFPSMode, startTour]);
 
   // Intro sequence animation
   useEffect(() => {
@@ -239,13 +257,17 @@ export default function WebsiteOverlay() {
       kingPieceRef.current.exitAnimation();
     }
 
-    // Fade out overlay and enter FPS mode after animation
+    // Fade out overlay and start guided tour (only first time), else jump to FPS
     gsap.to(overlayRef.current, {
       opacity: 0,
       duration: 0.8,
       ease: "power2.inOut",
       onComplete: () => {
-        enterFPSMode();
+        if (hasPlayedTour) {
+          enterFPSMode();
+        } else {
+          startTour();
+        }
         setIsTransitioning(false);
       },
     });

@@ -4,11 +4,22 @@ import * as THREE from "three";
 interface CollisionBox {
   id: string;
   box: THREE.Box3;
+  // For OBB collision detection
+  center: THREE.Vector3;
+  halfSize: THREE.Vector3;
+  rotation: THREE.Matrix4;
+  invRotation: THREE.Matrix4;
 }
 
 interface CollisionState {
   collisionBoxes: CollisionBox[];
-  addCollisionBox: (id: string, box: THREE.Box3) => void;
+  addCollisionBox: (
+    id: string,
+    box: THREE.Box3,
+    center: THREE.Vector3,
+    halfSize: THREE.Vector3,
+    rotation: THREE.Matrix4
+  ) => void;
   removeCollisionBox: (id: string) => void;
   clearCollisionBoxes: () => void;
   checkCollision: (position: THREE.Vector3, radius?: number) => boolean;
@@ -17,10 +28,21 @@ interface CollisionState {
 export const useCollisionStore = create<CollisionState>((set, get) => ({
   collisionBoxes: [],
 
-  addCollisionBox: (id: string, box: THREE.Box3) =>
+  addCollisionBox: (
+    id: string,
+    box: THREE.Box3,
+    center: THREE.Vector3,
+    halfSize: THREE.Vector3,
+    rotation: THREE.Matrix4
+  ) => {
+    const invRotation = rotation.clone().invert();
     set((state) => ({
-      collisionBoxes: [...state.collisionBoxes, { id, box }],
-    })),
+      collisionBoxes: [
+        ...state.collisionBoxes,
+        { id, box, center, halfSize, rotation, invRotation },
+      ],
+    }));
+  },
 
   removeCollisionBox: (id: string) =>
     set((state) => ({
@@ -32,12 +54,21 @@ export const useCollisionStore = create<CollisionState>((set, get) => ({
   checkCollision: (position: THREE.Vector3, radius = 0.5) => {
     const { collisionBoxes } = get();
 
-    // Create a bounding sphere around the player position
-    const playerSphere = new THREE.Sphere(position, radius);
+    for (const { center, halfSize, invRotation } of collisionBoxes) {
+      // Transform the player position into the OBB's local space
+      const localPos = position.clone().sub(center).applyMatrix4(invRotation);
 
-    for (const { box } of collisionBoxes) {
-      // Check if the player sphere intersects with any collision box
-      if (box.intersectsSphere(playerSphere)) {
+      // Find the closest point on the box to the player (in local space)
+      const closestPoint = new THREE.Vector3(
+        Math.max(-halfSize.x, Math.min(halfSize.x, localPos.x)),
+        Math.max(-halfSize.y, Math.min(halfSize.y, localPos.y)),
+        Math.max(-halfSize.z, Math.min(halfSize.z, localPos.z))
+      );
+
+      // Check distance from player to closest point
+      const distance = localPos.distanceTo(closestPoint);
+
+      if (distance < radius) {
         return true; // Collision detected
       }
     }

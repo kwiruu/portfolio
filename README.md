@@ -49,14 +49,14 @@ npm run build
 
 - **WASD** or **Arrow Keys**: Move around
 - **Mouse**: Look around
-- **E Key**: Interact with objects when looking at them
+- **Left Click** or **E Key**: Interact with objects when looking at them
 - **ESC**: Exit to website mode
 
 ### Viewing Objects
 
-- In FPS mode, look at a colored cube
-- Press **E** when the prompt appears
-- View project details
+- In FPS mode, look at a colored cube or click on it
+- The object will highlight when you hover over it
+- Press **E** or **Left Click** to view project details
 - Click "Back to Room" or press **ESC** to return
 
 ## Project Structure

@@ -4,9 +4,15 @@ export type ViewMode =
   | "WEBSITE_MODE"
   | "FPS_MODE"
   | "VIEWING_OBJECT"
-  | "SPLIT_MODE";
+  | "SPLIT_MODE"
+  | "TOUR_MODE";
 
-export type SplitModeContent = "certifications" | "projects" | null;
+export type SplitModeContent =
+  | "certifications"
+  | "projects"
+  | "about"
+  | "technical"
+  | null;
 
 interface InteractiveObject {
   id: string;
@@ -31,6 +37,11 @@ interface StoreState {
   isPointerLocked: boolean;
   setPointerLocked: (locked: boolean) => void;
 
+  // Tour state
+  isTourActive: boolean;
+  currentTourStep: number;
+  hasPlayedTour: boolean;
+
   // Utility actions
   enterFPSMode: () => void;
   exitFPSMode: () => void;
@@ -38,6 +49,9 @@ interface StoreState {
   exitSplitMode: () => void;
   viewObject: (object: InteractiveObject) => void;
   closeObject: () => void;
+  startTour: () => void;
+  nextTourStep: () => void;
+  endTour: () => void;
 }
 
 export const useStore = create<StoreState>((set) => ({
@@ -52,6 +66,11 @@ export const useStore = create<StoreState>((set) => ({
 
   isPointerLocked: false,
   setPointerLocked: (locked) => set({ isPointerLocked: locked }),
+
+  // Tour state
+  isTourActive: false,
+  currentTourStep: 0,
+  hasPlayedTour: false,
 
   // Enter FPS mode from website
   enterFPSMode: () =>
@@ -96,6 +115,31 @@ export const useStore = create<StoreState>((set) => ({
     set({
       viewMode: "FPS_MODE",
       activeObject: null,
+      isPointerLocked: true,
+    }),
+
+  // Start guided tour
+  startTour: () =>
+    set({
+      viewMode: "TOUR_MODE",
+      isTourActive: true,
+      currentTourStep: 0,
+      isPointerLocked: false,
+    }),
+
+  // Move to next tour step
+  nextTourStep: () =>
+    set((state) => ({
+      currentTourStep: state.currentTourStep + 1,
+    })),
+
+  // End tour and enter FPS mode
+  endTour: () =>
+    set({
+      viewMode: "FPS_MODE",
+      isTourActive: false,
+      currentTourStep: 0,
+      hasPlayedTour: true,
       isPointerLocked: true,
     }),
 }));

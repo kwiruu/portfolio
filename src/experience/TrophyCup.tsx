@@ -106,62 +106,78 @@ export default function TrophyCup({
     }
   });
 
-  // Listen for E key press when looking at trophy
+  // Handle interaction (called by both E key and click)
+  const handleInteraction = () => {
+    // Calculate target position and rotation
+    const targetPos = new THREE.Vector3(...cameraTarget.position);
+    const lookAtPos = new THREE.Vector3(...cameraTarget.lookAt);
+
+    // Calculate the direction to look at
+    const direction = new THREE.Vector3()
+      .subVectors(lookAtPos, targetPos)
+      .normalize();
+
+    // Calculate target yaw (Y rotation) and pitch (X rotation) from direction
+    const targetYaw = Math.atan2(-direction.x, -direction.z);
+    const targetPitch = Math.asin(direction.y);
+
+    // IMPORTANT: Enter split mode FIRST, then release pointer lock
+    // This prevents the Controls onPointerLockChange from triggering exitFPSMode
+    enterSplitMode("certifications");
+
+    // Now release pointer lock
+    if (document.pointerLockElement) {
+      document.exitPointerLock();
+    }
+
+    // Set up transition starting values
+    transitionProgress.current = {
+      posX: camera.position.x,
+      posY: camera.position.y,
+      posZ: camera.position.z,
+      rotX: camera.rotation.x,
+      rotY: camera.rotation.y,
+    };
+    isTransitioning.current = true;
+
+    // Smooth camera transition using gsap
+    gsap.to(transitionProgress.current, {
+      posX: targetPos.x,
+      posY: targetPos.y,
+      posZ: targetPos.z,
+      rotX: targetPitch,
+      rotY: targetYaw,
+      duration: 1,
+      ease: "power2.inOut",
+      onComplete: () => {
+        isTransitioning.current = false;
+      },
+    });
+  };
+
+  // Listen for E key press or click when looking at trophy
   useEffect(() => {
     if (!isLookingAt || viewMode !== "FPS_MODE") return;
 
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.code === "KeyE") {
-        // Calculate target position and rotation
-        const targetPos = new THREE.Vector3(...cameraTarget.position);
-        const lookAtPos = new THREE.Vector3(...cameraTarget.lookAt);
+        handleInteraction();
+      }
+    };
 
-        // Calculate the direction to look at
-        const direction = new THREE.Vector3()
-          .subVectors(lookAtPos, targetPos)
-          .normalize();
-
-        // Calculate target yaw (Y rotation) and pitch (X rotation) from direction
-        const targetYaw = Math.atan2(-direction.x, -direction.z);
-        const targetPitch = Math.asin(direction.y);
-
-        // IMPORTANT: Enter split mode FIRST, then release pointer lock
-        // This prevents the Controls onPointerLockChange from triggering exitFPSMode
-        enterSplitMode("certifications");
-
-        // Now release pointer lock
-        if (document.pointerLockElement) {
-          document.exitPointerLock();
-        }
-
-        // Set up transition starting values
-        transitionProgress.current = {
-          posX: camera.position.x,
-          posY: camera.position.y,
-          posZ: camera.position.z,
-          rotX: camera.rotation.x,
-          rotY: camera.rotation.y,
-        };
-        isTransitioning.current = true;
-
-        // Smooth camera transition using gsap
-        gsap.to(transitionProgress.current, {
-          posX: targetPos.x,
-          posY: targetPos.y,
-          posZ: targetPos.z,
-          rotX: targetPitch,
-          rotY: targetYaw,
-          duration: 1,
-          ease: "power2.inOut",
-          onComplete: () => {
-            isTransitioning.current = false;
-          },
-        });
+    const handleClick = (e: MouseEvent) => {
+      // Only trigger on left click (button 0)
+      if (e.button === 0) {
+        handleInteraction();
       }
     };
 
     document.addEventListener("keydown", handleKeyPress);
-    return () => document.removeEventListener("keydown", handleKeyPress);
+    document.addEventListener("click", handleClick);
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+      document.removeEventListener("click", handleClick);
+    };
   }, [isLookingAt, viewMode, enterSplitMode, camera, cameraTarget]);
 
   // Lighten materials when looking at the trophy

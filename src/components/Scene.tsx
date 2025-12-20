@@ -3,6 +3,8 @@ import { Canvas, useThree } from "@react-three/fiber";
 import { useStore } from "../store/useStore";
 import Room from "../experience/Room";
 import Controls from "../experience/Controls";
+import TourController from "../experience/TourController";
+import SplitModeParallax from "../experience/SplitModeParallax";
 import * as THREE from "three";
 
 function CameraSetup() {
@@ -27,10 +29,13 @@ export default function Scene() {
       style={{ background: "#fff" }}
     >
       <CameraSetup />
+      <SplitModeParallax />
       {/* Main 3D Room */}
       <Room />
       {/* FPS Controls (only active in FPS_MODE) */}
       {viewMode === "FPS_MODE" && <Controls />}
+      {/* Tour Controller (only active in TOUR_MODE) */}
+      {viewMode === "TOUR_MODE" && <TourController />}
     </Canvas>
   );
 }

@@ -34,6 +34,9 @@ export default function Controls() {
     viewModeRef.current = viewMode;
   }, [viewMode]);
 
+  // Track if we've successfully locked the pointer at least once
+  const hasLockedOnce = useRef(false);
+
   useEffect(() => {
     // Ensure camera rotation order is YXZ for FPS to avoid gimbal lock
     // We use a ref to bypass the lint rule about mutating hook return values
@@ -60,22 +63,16 @@ export default function Controls() {
     const onPointerLockChange = () => {
       if (document.pointerLockElement === gl.domElement) {
         console.log("Pointer locked");
+        hasLockedOnce.current = true;
       } else {
         console.log("Pointer unlocked");
-        // Only exit to website mode if we're still in FPS_MODE
-        // Don't exit if we switched to SPLIT_MODE or VIEWING_OBJECT
-        if (viewModeRef.current === "FPS_MODE") {
-          exitFPSMode();
-        }
+        // Do not auto-exit on unlock; Escape handler will handle intentional exits
       }
     };
 
     const onPointerLockError = () => {
       console.error("Pointer lock error");
-      // Only exit if still in FPS_MODE
-      if (viewModeRef.current === "FPS_MODE") {
-        exitFPSMode();
-      }
+      // Do not auto-exit; allow user to click to lock again
     };
 
     document.addEventListener("mousemove", onMouseMove);
@@ -98,9 +95,11 @@ export default function Controls() {
     const onKeyDown = (event: KeyboardEvent) => {
       switch (event.code) {
         case "Escape":
-          // If not locked, force exit
-          if (document.pointerLockElement !== gl.domElement) {
+          if (viewModeRef.current === "FPS_MODE") {
             exitFPSMode();
+            if (document.pointerLockElement === gl.domElement) {
+              document.exitPointerLock();
+            }
           }
           break;
         case "KeyW":
@@ -155,6 +154,9 @@ export default function Controls() {
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("keyup", onKeyUp);
 
+      // Reset the lock flag when unmounting
+      hasLockedOnce.current = false;
+
       if (document.pointerLockElement === gl.domElement) {
         document.exitPointerLock();
       }
@@ -166,7 +168,7 @@ export default function Controls() {
     if (document.pointerLockElement !== gl.domElement) return;
 
     // Movement speed
-    const speed = 1.0;
+    const speed = 0.5;
     const dampingFactor = 10.0;
 
     // Calculate movement direction
@@ -196,18 +198,33 @@ export default function Controls() {
     velocity.current.addScaledVector(cameraDirection, -moveZ);
     velocity.current.addScaledVector(cameraRight, moveX);
 
-    // Store old position in case of collision
+    // Store old position for collision sliding
     const oldPosition = camera.position.clone();
 
-    // Move camera
+    // Try moving on both axes first
     camera.position.add(velocity.current);
 
     // Check for collision with the new position
     if (checkCollision(camera.position, 0.3)) {
-      // Collision detected, revert to old position
+      // Collision detected, try sliding along walls
+
+      // First, try moving only on X axis
       camera.position.copy(oldPosition);
-      // Stop velocity to prevent sliding into walls
-      velocity.current.set(0, 0, 0);
+      camera.position.x += velocity.current.x;
+
+      if (checkCollision(camera.position, 0.3)) {
+        // X movement blocked, revert X
+        camera.position.x = oldPosition.x;
+      }
+
+      // Then try moving only on Z axis
+      const afterXPosition = camera.position.clone();
+      camera.position.z += velocity.current.z;
+
+      if (checkCollision(camera.position, 0.3)) {
+        // Z movement blocked, revert Z
+        camera.position.z = afterXPosition.z;
+      }
     }
 
     // Apply damping

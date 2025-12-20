@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import type { ThreeEvent } from "@react-three/fiber";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useStore } from "../store/useStore";
 import * as THREE from "three";
@@ -66,33 +67,32 @@ export default function InteractiveObject({
   });
 
   // Handle interaction
-  const handleClick = () => {
-    if (viewMode === "FPS_MODE" && isLookingAt) {
-      viewObject(objectData);
-    }
+  const handleClick = (e: ThreeEvent<MouseEvent>) => {
+    if (viewMode !== "FPS_MODE") return;
+    e.stopPropagation();
+    viewObject(objectData);
   };
 
-  // Listen for E key press
-  useFrame(() => {
-    if (!isLookingAt || viewMode !== "FPS_MODE") return;
+  // Handle hover effects
+  const handlePointerOver = (e: ThreeEvent<MouseEvent>) => {
+    if (viewMode !== "FPS_MODE") return;
+    e.stopPropagation();
+    setIsHovered(true);
+    document.body.style.cursor = "pointer";
+  };
 
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.code === "KeyE") {
-        viewObject(objectData);
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyPress);
-    return () => document.removeEventListener("keydown", handleKeyPress);
-  });
+  const handlePointerOut = () => {
+    setIsHovered(false);
+    document.body.style.cursor = "default";
+  };
 
   return (
     <group position={position}>
       <mesh
         ref={meshRef}
         onClick={handleClick}
-        onPointerOver={() => setIsHovered(true)}
-        onPointerOut={() => setIsHovered(false)}
+        onPointerOver={handlePointerOver}
+        onPointerOut={handlePointerOut}
         castShadow
       >
         <boxGeometry args={[0.2, 0.2, 0.2]} />
@@ -114,7 +114,7 @@ export default function InteractiveObject({
           anchorX="center"
           anchorY="middle"
         >
-          Press E to interact
+          Press E or Click to interact
         </Text>
       )}
 
