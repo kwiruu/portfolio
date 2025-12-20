@@ -38,10 +38,14 @@ export default function Controls() {
 
   const isMobileRef = useRef(false);
   useEffect(() => {
-    const checkMobile = () =>
-      typeof window !== "undefined" &&
-      (window.matchMedia("(max-width: 768px)").matches ||
-        /Mobi|Android/i.test(navigator.userAgent));
+    const checkMobile = () => {
+      if (typeof window === "undefined") return false;
+      const coarse = window.matchMedia("(pointer: coarse)").matches;
+      const touchCapable = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+      const narrow = window.innerWidth <= 1024 || window.innerHeight <= 768;
+      const uaMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      return coarse || touchCapable || narrow || uaMobile;
+    };
     isMobileRef.current = checkMobile();
 
     const onResize = () => {
