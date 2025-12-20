@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ThreeEvent } from "@react-three/fiber";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useStore } from "../store/useStore";
@@ -26,6 +26,8 @@ export default function InteractiveObject({
   const { camera } = useThree();
   const viewObject = useStore((state) => state.viewObject);
   const viewMode = useStore((state) => state.viewMode);
+  const targetedObject = useStore((state) => state.targetedObject);
+  const setTargetedObject = useStore((state) => state.setTargetedObject);
 
   // Animate object
   useFrame((state) => {
@@ -65,6 +67,22 @@ export default function InteractiveObject({
       setIsLookingAt(false);
     }
   });
+
+  useEffect(() => {
+    if (isLookingAt) {
+      setTargetedObject(objectData);
+    } else if (targetedObject?.id === objectData.id) {
+      setTargetedObject(null);
+    }
+  }, [isLookingAt, objectData, setTargetedObject, targetedObject]);
+
+  useEffect(() => {
+    return () => {
+      if (targetedObject?.id === objectData.id) {
+        setTargetedObject(null);
+      }
+    };
+  }, [objectData, setTargetedObject, targetedObject]);
 
   // Handle interaction
   const handleClick = (e: ThreeEvent<MouseEvent>) => {

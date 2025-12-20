@@ -33,6 +33,14 @@ interface StoreState {
   activeObject: InteractiveObject | null;
   setActiveObject: (object: InteractiveObject | null) => void;
 
+  // Object currently in focus (e.g., centered crosshair)
+  targetedObject: InteractiveObject | null;
+  setTargetedObject: (object: InteractiveObject | null) => void;
+
+  // Mobile movement input
+  mobileMove: { x: number; z: number };
+  setMobileMove: (input: { x: number; z: number }) => void;
+
   // Controls lock state
   isPointerLocked: boolean;
   setPointerLocked: (locked: boolean) => void;
@@ -63,6 +71,12 @@ export const useStore = create<StoreState>((set) => ({
 
   activeObject: null,
   setActiveObject: (object) => set({ activeObject: object }),
+
+  targetedObject: null,
+  setTargetedObject: (object) => set({ targetedObject: object }),
+
+  mobileMove: { x: 0, z: 0 },
+  setMobileMove: (input) => set({ mobileMove: input }),
 
   isPointerLocked: false,
   setPointerLocked: (locked) => set({ isPointerLocked: locked }),

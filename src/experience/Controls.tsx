@@ -15,6 +15,8 @@ export default function Controls() {
   const { camera, gl } = useThree();
   const exitFPSMode = useStore((state) => state.exitFPSMode);
   const viewMode = useStore((state) => state.viewMode);
+  const mobileMove = useStore((state) => state.mobileMove);
+  const setMobileMove = useStore((state) => state.setMobileMove);
   const checkCollision = useCollisionStore((state) => state.checkCollision);
 
   // Movement state
@@ -34,18 +36,36 @@ export default function Controls() {
     viewModeRef.current = viewMode;
   }, [viewMode]);
 
+  const isMobileRef = useRef(false);
+  useEffect(() => {
+    const checkMobile = () =>
+      typeof window !== "undefined" &&
+      (window.matchMedia("(max-width: 768px)").matches ||
+        /Mobi|Android/i.test(navigator.userAgent));
+    isMobileRef.current = checkMobile();
+
+    const onResize = () => {
+      isMobileRef.current = checkMobile();
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   // Track if we've successfully locked the pointer at least once
   const hasLockedOnce = useRef(false);
 
   useEffect(() => {
     // Ensure camera rotation order is YXZ for FPS to avoid gimbal lock
-    // We use a ref to bypass the lint rule about mutating hook return values
-    // This is safe because we are in a useEffect and we know what we are doing
     const camRef = { current: camera };
-    // Preserve the current orientation when changing rotation order
     const currentQuaternion = camera.quaternion.clone();
     camRef.current.rotation.order = "YXZ";
     camRef.current.rotation.setFromQuaternion(currentQuaternion);
+
+    if (isMobileRef.current) {
+      return () => {
+        setMobileMove({ x: 0, z: 0 });
+      };
+    }
 
     const onMouseMove = (event: MouseEvent) => {
       if (document.pointerLockElement !== gl.domElement) return;
@@ -163,9 +183,54 @@ export default function Controls() {
     };
   }, [camera, gl.domElement, exitFPSMode]);
 
+  useEffect(() => {
+    if (!isMobileRef.current) return;
+
+    let lastX: number | null = null;
+    let lastY: number | null = null;
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (viewModeRef.current !== "FPS_MODE") return;
+      const touch = e.touches[0];
+      if (lastX === null || lastY === null) {
+        lastX = touch.clientX;
+        lastY = touch.clientY;
+        return;
+      }
+
+      const deltaX = touch.clientX - lastX;
+      const deltaY = touch.clientY - lastY;
+      lastX = touch.clientX;
+      lastY = touch.clientY;
+
+      camera.rotation.y -= deltaX * SENSITIVITY;
+      camera.rotation.x -= deltaY * SENSITIVITY;
+      camera.rotation.x = Math.max(
+        -Math.PI / 2,
+        Math.min(Math.PI / 2, camera.rotation.x)
+      );
+    };
+
+    const onTouchEnd = () => {
+      lastX = null;
+      lastY = null;
+    };
+
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("touchend", onTouchEnd);
+    window.addEventListener("touchcancel", onTouchEnd);
+
+    return () => {
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("touchcancel", onTouchEnd);
+    };
+  }, [camera]);
+
   // Movement logic
   useFrame((_, delta) => {
-    if (document.pointerLockElement !== gl.domElement) return;
+    if (!isMobileRef.current && document.pointerLockElement !== gl.domElement)
+      return;
 
     // Movement speed
     const speed = 0.5;
@@ -174,10 +239,15 @@ export default function Controls() {
     // Calculate movement direction
     direction.current.set(0, 0, 0);
 
-    if (moveState.current.forward) direction.current.z -= 1;
-    if (moveState.current.backward) direction.current.z += 1;
-    if (moveState.current.left) direction.current.x -= 1;
-    if (moveState.current.right) direction.current.x += 1;
+    if (isMobileRef.current) {
+      direction.current.x = mobileMove.x;
+      direction.current.z = mobileMove.z;
+    } else {
+      if (moveState.current.forward) direction.current.z -= 1;
+      if (moveState.current.backward) direction.current.z += 1;
+      if (moveState.current.left) direction.current.x -= 1;
+      if (moveState.current.right) direction.current.x += 1;
+    }
 
     direction.current.normalize();
 

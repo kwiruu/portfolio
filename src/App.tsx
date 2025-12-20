@@ -7,6 +7,7 @@ import SplitModeOverlay from "./components/SplitModeOverlay";
 import ProjectsOverlay from "./components/ProjectsOverlay";
 import AboutOverlay from "./components/AboutOverlay";
 import TechnicalOverlay from "./components/TechnicalOverlay";
+import MobileControlsOverlay from "./components/MobileControlsOverlay";
 
 function App() {
   return (
@@ -28,6 +29,9 @@ function App() {
 
       {/* Controls Info */}
       <ControlsInfo />
+
+      {/* Mobile controls overlay */}
+      <MobileControlsOverlay />
     </div>
   );
 }
