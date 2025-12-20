@@ -2,7 +2,7 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import { useStore } from "../store/useStore";
 import gsap from "gsap";
 import jobtargetLogo from "../assets/education/jobtarget.png";
-import keirulogo from  "../assets/k-logo.svg";
+import keirulogo from "../assets/k-logo.svg";
 import citulogo from "../assets/education/citlogo.png";
 import {
   Tooltip,

@@ -24,6 +24,8 @@ import artFrieren from "../assets/arts/floating-frieren-192562.gif";
 import artPelageya from "../assets/arts/pelageya-sergeyevna-467318.gif";
 import artSylphiette from "../assets/arts/sylphiette-575796.gif";
 
+type LinkedInWindow = Window & { LIRenderAll?: () => void };
+
 const PIXEL_ARTS = [
   { src: artFrieren, title: "Floating Frieren" },
   { src: artPelageya, title: "Pelageya Sergeyevna" },
@@ -261,6 +263,40 @@ export default function AboutOverlay() {
   useEffect(() => {
     if (viewMode !== "SPLIT_MODE" || splitModeContent !== "about") return;
 
+    const linkedInScript = document.querySelector<HTMLScriptElement>(
+      'script[src="https://platform.linkedin.com/badges/js/profile.js"]'
+    );
+
+    const renderBadge = () => {
+      (window as LinkedInWindow).LIRenderAll?.();
+    };
+
+    if (linkedInScript) {
+      if ((window as LinkedInWindow).LIRenderAll) {
+        renderBadge();
+      } else {
+        linkedInScript.addEventListener("load", renderBadge);
+        return () => linkedInScript.removeEventListener("load", renderBadge);
+      }
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://platform.linkedin.com/badges/js/profile.js";
+    script.async = true;
+    script.defer = true;
+    script.type = "text/javascript";
+    script.onload = renderBadge;
+    document.body.appendChild(script);
+
+    return () => {
+      script.onload = null;
+    };
+  }, [viewMode, splitModeContent]);
+
+  useEffect(() => {
+    if (viewMode !== "SPLIT_MODE" || splitModeContent !== "about") return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === "Escape") {
         handleClose();
@@ -441,19 +477,88 @@ export default function AboutOverlay() {
             <h2 className="text-lg font-bold text-neutral-900 font-equitan mb-4">
               Let's Connect
             </h2>
-            <div className="flex gap-3">
-              {SOCIALS.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 text-neutral-600 bg-neutral-100 rounded-lg hover:bg-neutral-200 hover:text-neutral-900 transition-all"
-                  title={social.name}
-                >
-                  {social.icon}
-                </a>
-              ))}
+            <div className="flex flex-col gap-4">
+              <div className="flex gap-3">
+                {SOCIALS.map((social) => (
+                  <a
+                    key={social.name}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 text-neutral-600 bg-neutral-100 rounded-lg hover:bg-neutral-200 hover:text-neutral-900 transition-all"
+                    title={social.name}
+                  >
+                    {social.icon}
+                  </a>
+                ))}
+              </div>
+              <div className="flex flex-col gap-4 md:flex-row">
+                <div>
+                  <div
+                    className="badge-base LI-profile-badge"
+                    data-locale="en_US"
+                    data-size="large"
+                    data-theme="light"
+                    data-type="HORIZONTAL"
+                    data-vanity="keirucabili"
+                    data-version="v1"
+                  >
+                    <a
+                      className="badge-base__link LI-simple-link"
+                      href="https://ph.linkedin.com/in/keirucabili?trk=profile-badge"
+                    >
+                      Keiru Cabili
+                    </a>
+                  </div>
+                </div>
+                <div className="flex-1 rounded-xl border bg-gray-950 shadow-sm overflow-hidden h-min">
+                  <div className="flex items-center gap-2 bg-gray-900 px-4 py-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="#ffffff"
+                      className="w-7 h-7 text-neutral-800"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <span className="text-xl font-semibold text-neutral-200 font-equitan pt-0.5">
+                      GitHub
+                    </span>
+                  </div>
+                  <div className="w-14 h-14 rounded-full overflow-hidden border border-neutral-600 mx-4 mt-3 mb-2">
+                    <img
+                      src="https://github.com/kwiruu.png"
+                      alt="GitHub avatar"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex gap-3 px-4 pb-5">
+                    <div className="flex flex-col justify-center">
+                      <p className="text-lg font-semibold text-neutral-200 font-equitan">
+                        Keiru Cabili
+                      </p>
+                      <p className="text-sm text-neutral-500 font-equitan">
+                        Software Developer | Aspiring DevSecOps Engineer
+                      </p>
+                      <p className="text-sm text-neutral-500 font-equitan">
+                        kwiruu | Open-source projects & cloud builds
+                      </p>
+                      <a
+                        href="https://github.com/kwiruu"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 inline-flex h-10 w-32 items-center justify-center rounded-full border border-neutral-300 px-4 text-md font-semibold text-neutral-300 transition-colors hover:bg-[#e6f0fb]"
+                      >
+                        View profile
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
