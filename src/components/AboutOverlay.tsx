@@ -477,7 +477,7 @@ export default function AboutOverlay() {
             <h2 className="text-lg font-bold text-neutral-900 font-equitan mb-4">
               Let's Connect
             </h2>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col">
               <div className="flex gap-3">
                 {SOCIALS.map((social) => (
                   <a
@@ -511,7 +511,7 @@ export default function AboutOverlay() {
                     </a>
                   </div>
                 </div>
-                <div className="flex-1 rounded-xl border bg-gray-950 shadow-sm overflow-hidden h-min">
+                <div className="flex-1 rounded-xl border bg-gray-950 shadow-sm overflow-hidden h-min mt-6">
                   <div className="flex items-center gap-2 bg-gray-900 px-4 py-2">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -551,7 +551,7 @@ export default function AboutOverlay() {
                         href="https://github.com/kwiruu"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-3 inline-flex h-10 w-32 items-center justify-center rounded-full border border-neutral-300 px-4 text-md font-semibold text-neutral-300 transition-colors hover:bg-[#e6f0fb]"
+                        className="mt-3 inline-flex h-9 w-32 items-center justify-center rounded-full border border-neutral-300 px-4 text-md font-semibold text-neutral-300 transition-colors hover:bg-[#e6f0fb]"
                       >
                         View profile
                       </a>
