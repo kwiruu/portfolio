@@ -9,7 +9,7 @@ const MOVEMENT_BOUNDS = {
   z: 40,
 };
 
-const SENSITIVITY = 0.002;
+const SENSITIVITY = 0.004;
 
 export default function Controls() {
   const { camera, gl } = useThree();

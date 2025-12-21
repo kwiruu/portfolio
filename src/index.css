@@ -244,3 +244,12 @@
     transform: translateY(0) scale(1);
   }
 }
+
+/* Animation utility classes */
+.animate-tilt {
+  animation: tilt 2s ease-in-out infinite;
+}
+
+.animate-fadeIn {
+  animation: fadeInOverlay 0.3s ease-out forwards;
+}

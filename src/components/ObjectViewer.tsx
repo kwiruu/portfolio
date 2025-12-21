@@ -12,8 +12,7 @@ export default function ObjectViewer() {
     const touchCapable =
       "ontouchstart" in window || navigator.maxTouchPoints > 0;
     const coarse = window.matchMedia("(pointer: coarse)").matches;
-    const smallScreen =
-      window.innerWidth <= 1024 || window.innerHeight <= 768;
+    const smallScreen = window.innerWidth <= 1024 || window.innerHeight <= 768;
     const uaMobile =
       /Mobi|Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(
         navigator.userAgent

@@ -1,12 +1,79 @@
 import { useGLTF } from "@react-three/drei";
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import TrophyCup from "./TrophyCup";
 import PC from "./PC";
 import PictureFrame from "./PictureFrame";
 import Board from "./Board";
 import CollisionBox from "../components/CollisionBox";
 
+// Helper function to detect mobile devices
+function checkIsMobile(): boolean {
+  if (typeof window === "undefined") return false;
+  const touchCapable = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  const coarse = window.matchMedia("(pointer: coarse)").matches;
+  const smallScreen = window.innerWidth <= 1024 || window.innerHeight <= 768;
+  return touchCapable || coarse || smallScreen;
+}
+
+// Camera targets for each interactive object
+// Desktop: positioned for split-screen view (content on left, 3D on right)
+// Mobile: positioned to show more of the scene in the smaller viewport
+const CAMERA_TARGETS = {
+  trophyCup: {
+    desktop: {
+      position: [2, 1.7, -0.5] as [number, number, number],
+      lookAt: [70, 15, -20] as [number, number, number],
+    },
+    mobile: {
+      position: [2, 1.7, 1.6] as [number, number, number],
+      lookAt: [1.3, 0.5, 2.8] as [number, number, number],
+    },
+  },
+  pc: {
+    desktop: {
+      position: [2, 1.7, -2.5] as [number, number, number],
+      lookAt: [0, 1, -6] as [number, number, number],
+    },
+    mobile: {
+      position: [2, 1.7, -2.5] as [number, number, number],
+      lookAt: [-1, 1, -6] as [number, number, number],
+    },
+  },
+  pictureFrame: {
+    desktop: {
+      position: [1.6, 1.7, 1.5] as [number, number, number],
+      lookAt: [0.3, 0.5, 2.8] as [number, number, number],
+    },
+    mobile: {
+      position: [2, 1.7, 1.6] as [number, number, number],
+      lookAt: [1.3, 0.5, 2.8] as [number, number, number],
+    },
+  },
+  board: {
+    desktop: {
+      position: [0, 1.7, -1.5] as [number, number, number],
+      lookAt: [-2.5, 2, -1.7] as [number, number, number],
+    },
+    mobile: {
+      position: [0, 1.7, -1.5] as [number, number, number],
+      lookAt: [-2.5, 2, -1] as [number, number, number],
+    },
+  },
+};
+
 export default function Room() {
+  const [isMobile, setIsMobile] = useState(checkIsMobile());
+
+  // Update mobile state on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(checkIsMobile());
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   // Load your 3D room model
   const roomModel = useMemo(
     () =>
@@ -114,12 +181,11 @@ export default function Room() {
       <TrophyCup
         position={[5.04, 1.21, 0.44]}
         scale={0.15}
-        cameraTarget={{
-          // Camera will move to this position (at eye level, looking into the room)
-          position: [2, 1.7, -0.5],
-          // Camera will look at this point in the room
-          lookAt: [70, 15, -20],
-        }}
+        cameraTarget={
+          isMobile
+            ? CAMERA_TARGETS.trophyCup.mobile
+            : CAMERA_TARGETS.trophyCup.desktop
+        }
       />
       {/* PC - Triggers Projects Split Mode */}
       <PC
@@ -127,10 +193,9 @@ export default function Room() {
         scale={1}
         rotation={[0, 0, 0]}
         interactionRange={3}
-        cameraTarget={{
-          position: [2, 1.7, -2.5],
-          lookAt: [0, 1, -6],
-        }}
+        cameraTarget={
+          isMobile ? CAMERA_TARGETS.pc.mobile : CAMERA_TARGETS.pc.desktop
+        }
       />
       {/* Picture Frame - Triggers About Split Mode */}
       <PictureFrame
@@ -138,10 +203,11 @@ export default function Room() {
         scale={0.5}
         rotation={[0, 5.5, 0]}
         interactionRange={2.5}
-        cameraTarget={{
-          position: [1.6, 1.7, 1.5],
-          lookAt: [0.3, 0.5, 2.8],
-        }}
+        cameraTarget={
+          isMobile
+            ? CAMERA_TARGETS.pictureFrame.mobile
+            : CAMERA_TARGETS.pictureFrame.desktop
+        }
       />
       {/* Board - Triggers Technical Split Mode */}
       <Board
@@ -149,10 +215,9 @@ export default function Room() {
         scale={0.8}
         rotation={[0, 1.15, 0]}
         interactionRange={3}
-        cameraTarget={{
-          position: [0, 1.7, -1.5],
-          lookAt: [-2.5, 2, -1.7],
-        }}
+        cameraTarget={
+          isMobile ? CAMERA_TARGETS.board.mobile : CAMERA_TARGETS.board.desktop
+        }
       />
     </group>
   );

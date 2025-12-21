@@ -209,7 +209,7 @@ export default function MobileControlsOverlay() {
               style={{ touchAction: "manipulation" }}
               aria-label="Interact"
             >
-              <img src={enterKey} alt="Interact" className="h-13 w-auto" />
+              <img src={enterKey} alt="Interact" className="h-12 w-auto" />
             </button>
           ) : null}
         </div>

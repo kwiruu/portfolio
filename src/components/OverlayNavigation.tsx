@@ -1,22 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useStore, type SplitModeContent } from "../store/useStore";
 import logo from "../assets/k-logo.svg";
 
+// Helper function to detect mobile devices
 function checkIsMobile(): boolean {
   if (typeof window === "undefined") return false;
   const touchCapable = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   const coarse = window.matchMedia("(pointer: coarse)").matches;
   const smallScreen = window.innerWidth <= 1024 || window.innerHeight <= 768;
-  const uaMobile =
-    /Mobi|Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    );
-  return touchCapable || coarse || smallScreen || uaMobile;
-}
-
-function checkIsPortrait(): boolean {
-  if (typeof window === "undefined") return false;
-  return window.innerHeight > window.innerWidth;
+  return touchCapable || coarse || smallScreen;
 }
 
 // Navigation order for overlays
@@ -34,26 +26,47 @@ const OVERLAY_LABELS: Record<string, string> = {
   certifications: "Certifications",
 };
 
-// Camera targets for each overlay (matching Room.tsx object placements)
-const CAMERA_TARGETS: Record<
-  string,
-  { position: [number, number, number]; lookAt: [number, number, number] }
-> = {
+// Camera targets for each overlay - separate configs for desktop and mobile
+const CAMERA_TARGETS = {
   about: {
-    position: [1.6, 1.7, 1.5],
-    lookAt: [0.3, 0.5, 2.8],
+    desktop: {
+      position: [1.6, 1.7, 1.5] as [number, number, number],
+      lookAt: [0.3, 0.5, 2.8] as [number, number, number],
+    },
+    mobile: {
+      position: [2, 1.7, 1.6] as [number, number, number],
+      lookAt: [1.3, 0.5, 2.8] as [number, number, number],
+    },
   },
   technical: {
-    position: [0, 1.7, -1.5],
-    lookAt: [-2.5, 2, -1.7],
+    desktop: {
+      position: [0, 1.7, -1.5] as [number, number, number],
+      lookAt: [-2.5, 2, -1.7] as [number, number, number],
+    },
+    mobile: {
+      position: [0, 1.7, -1.5] as [number, number, number],
+      lookAt: [-2.5, 2, -1] as [number, number, number],
+    },
   },
   projects: {
-    position: [2, 1.7, -2.5],
-    lookAt: [0, 1, -6],
+    desktop: {
+      position: [2, 1.7, -2.5] as [number, number, number],
+      lookAt: [0, 1, -6] as [number, number, number],
+    },
+    mobile: {
+      position: [2, 1.7, -2.5] as [number, number, number],
+      lookAt: [-1, 1, -6] as [number, number, number],
+    },
   },
   certifications: {
-    position: [2, 1.7, -0.5],
-    lookAt: [70, 15, -20],
+    desktop: {
+      position: [2, 1.7, -0.5] as [number, number, number],
+      lookAt: [70, 15, -20] as [number, number, number],
+    },
+    mobile: {
+      position: [2, 1.7, -0.5] as [number, number, number],
+      lookAt: [70, 15, -35] as [number, number, number],
+    },
   },
 };
 
@@ -62,27 +75,20 @@ export default function OverlayNavigation() {
   const current = useStore((state) => state.splitModeContent);
   const setSplitModeContent = useStore((state) => state.setSplitModeContent);
   const setCameraTarget = useStore((state) => state.setCameraTarget);
+  const [isMobile, setIsMobile] = useState(checkIsMobile());
 
-  const [isMobilePortrait, setIsMobilePortrait] = useState(false);
-
+  // Update mobile state on resize
   useEffect(() => {
-    const handleChange = () => {
-      setIsMobilePortrait(checkIsMobile() && checkIsPortrait());
+    const handleResize = () => {
+      setIsMobile(checkIsMobile());
     };
-    handleChange();
 
-    window.addEventListener("resize", handleChange);
-    window.addEventListener("orientationchange", handleChange);
-
-    return () => {
-      window.removeEventListener("resize", handleChange);
-      window.removeEventListener("orientationchange", handleChange);
-    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Don't show on mobile portrait - MobilePortraitOverlay handles that
   // Only show when in split mode with valid content
-  if (isMobilePortrait || viewMode !== "SPLIT_MODE" || !current) return null;
+  if (viewMode !== "SPLIT_MODE" || !current) return null;
 
   const currentIndex = OVERLAY_ORDER.indexOf(current);
   const prevContent = currentIndex > 0 ? OVERLAY_ORDER[currentIndex - 1] : null;
@@ -93,8 +99,9 @@ export default function OverlayNavigation() {
 
   const handleNavigate = (content: SplitModeContent) => {
     if (content) {
-      // Set camera target to animate to the new object's view
-      setCameraTarget(CAMERA_TARGETS[content]);
+      // Set camera target to animate to the new object's view (use mobile or desktop config)
+      const targets = CAMERA_TARGETS[content];
+      setCameraTarget(isMobile ? targets.mobile : targets.desktop);
       setSplitModeContent(content);
     }
   };
@@ -106,7 +113,7 @@ export default function OverlayNavigation() {
       </div>
       <div
         data-overlay-nav="true"
-        className="fixed bottom-6 z-50 flex items-center gap-3 animate-in backdrop-blur-sm px-3 py-2"
+        className="fixed bottom-6 z-50 flex items-center gap-3 animate-in px-3 py-2"
         style={{
           left: "auto",
           right: 24,
@@ -118,7 +125,7 @@ export default function OverlayNavigation() {
         <button
           onClick={() => handleNavigate(prevContent)}
           disabled={!prevContent}
-          className="group flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-neutral-200 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+          className="group flex items-center gap-2 p-2 rounded-lg hover:bg-neutral-200 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
           aria-label={
             prevContent ? `Go to ${OVERLAY_LABELS[prevContent]}` : "No previous"
           }
@@ -136,9 +143,6 @@ export default function OverlayNavigation() {
               d="M15.75 19.5L8.25 12l7.5-7.5"
             />
           </svg>
-          <span className="text-sm font-medium text-neutral-600 group-hover:text-neutral-900 font-equitan">
-            {prevContent ? OVERLAY_LABELS[prevContent] : "Previous"}
-          </span>
         </button>
 
         {/* Next Button */}

@@ -44,17 +44,23 @@ export default function TourController() {
   const { camera, gl } = useThree();
   const viewMode = useStore((state) => state.viewMode);
   const isTourActive = useStore((state) => state.isTourActive);
+  const isPortrait = useStore((state) => state.isPortrait);
   const endTour = useStore((state) => state.endTour);
 
   const isAnimating = useRef(false);
   const hasStartedTour = useRef(false);
   const currentStepRef = useRef(0);
 
-  // Start tour animation when tour becomes active
+  // Start tour animation when tour becomes active AND device is in landscape
   useEffect(() => {
     if (!isTourActive || viewMode !== "TOUR_MODE") {
       hasStartedTour.current = false;
       currentStepRef.current = 0;
+      return;
+    }
+
+    // Don't start tour animation if in portrait mode - wait for landscape
+    if (isPortrait) {
       return;
     }
 
@@ -176,7 +182,7 @@ export default function TourController() {
     setTimeout(() => {
       animateToStep(0);
     }, 1000); // 1 second pause before first target
-  }, [isTourActive, viewMode, camera, gl.domElement, endTour]);
+  }, [isTourActive, viewMode, isPortrait, camera, gl.domElement, endTour]);
 
   return null;
 }

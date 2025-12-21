@@ -48,15 +48,15 @@ interface StoreState {
 
   // Mobile movement input
   mobileMove: { x: number; z: number };
-
-  // Landscape prompt for mobile portrait users
-  showLandscapePrompt: boolean;
-  setShowLandscapePrompt: (show: boolean) => void;
   setMobileMove: (input: { x: number; z: number }) => void;
 
   // Controls lock state
   isPointerLocked: boolean;
   setPointerLocked: (locked: boolean) => void;
+
+  // Portrait orientation state (used to pause tour on mobile portrait)
+  isPortrait: boolean;
+  setIsPortrait: (portrait: boolean) => void;
 
   // Tour state
   isTourActive: boolean;
@@ -94,11 +94,12 @@ export const useStore = create<StoreState>((set) => ({
   mobileMove: { x: 0, z: 0 },
   setMobileMove: (input) => set({ mobileMove: input }),
 
-  showLandscapePrompt: false,
-  setShowLandscapePrompt: (show) => set({ showLandscapePrompt: show }),
-
   isPointerLocked: false,
   setPointerLocked: (locked) => set({ isPointerLocked: locked }),
+
+  // Portrait orientation state
+  isPortrait: false,
+  setIsPortrait: (portrait) => set({ isPortrait: portrait }),
 
   // Tour state
   isTourActive: false,

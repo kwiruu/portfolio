@@ -274,16 +274,16 @@ export default function SplitModeOverlay() {
   return (
     <div
       ref={overlayRef}
-      className="fixed left-0 top-0 w-full md:w-1/2 h-full z-20 bg-white overflow-hidden"
+      className="fixed left-0 top-0 w-[70%] md:w-1/2 h-full z-20 bg-white overflow-hidden"
       style={{ borderRight: "1px solid #e5e5e5" }}
     >
       {/* Close Button */}
       <button
         onClick={handleClose}
-        className="absolute top-8 right-8 z-30 group"
+        className="absolute top-2 right-2 sm:top-4 sm:right-4 md:top-8 md:right-8 z-30 group"
         aria-label="Close"
       >
-        <span className="text-sm font-light text-neutral-400 group-hover:text-neutral-900 transition-colors font-equitan">
+        <span className="text-[10px] sm:text-xs md:text-sm font-light text-neutral-400 group-hover:text-neutral-900 transition-colors font-equitan">
           Close
         </span>
       </button>
@@ -291,42 +291,42 @@ export default function SplitModeOverlay() {
       {/* Content */}
       <div
         ref={contentRef}
-        className="h-full overflow-y-auto px-10 py-12 scrollbar-hide"
+        className="h-full overflow-y-auto px-2 py-3 sm:px-4 sm:py-6 md:px-10 md:py-12 scrollbar-hide"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {/* Hero Header */}
-        <div className="mb-8 animate-in">
-          <h1 className="text-4xl lg:text-5xl font-bold text-neutral-900 font-equitan leading-tight">
+        <div className="mb-2 sm:mb-4 md:mb-8 animate-in">
+          <h1 className="text-base sm:text-2xl md:text-4xl lg:text-5xl font-bold text-neutral-900 font-equitan leading-tight">
             Certifications
           </h1>
-          <p className="text-lg font-light text-neutral-400 font-equitan mt-2">
+          <p className="text-[10px] sm:text-sm md:text-lg font-light text-neutral-400 font-equitan mt-0.5 sm:mt-1 md:mt-2">
             Licenses & professional credentials
           </p>
         </div>
 
         {/* Stats Row */}
-        <div className="flex gap-10 mb-2 animate-in pb-8 border-b border-neutral-200">
+        <div className="flex gap-2 sm:gap-4 md:gap-10 mb-2 animate-in pb-2 sm:pb-4 md:pb-8 border-b border-neutral-200">
           <div>
-            <p className="text-3xl font-bold text-neutral-900 font-equitan">
+            <p className="text-sm sm:text-xl md:text-3xl font-bold text-neutral-900 font-equitan">
               15+
             </p>
-            <p className="text-sm font-light text-neutral-400 font-equitan">
+            <p className="text-[8px] sm:text-xs md:text-sm font-light text-neutral-400 font-equitan">
               Certifications
             </p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-neutral-400 font-equitan">
+            <p className="text-sm sm:text-xl md:text-3xl font-bold text-neutral-400 font-equitan">
               5
             </p>
-            <p className="text-sm font-light text-neutral-400 font-equitan">
+            <p className="text-[8px] sm:text-xs md:text-sm font-light text-neutral-400 font-equitan">
               Cloud Platforms
             </p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-neutral-400 font-equitan">
+            <p className="text-sm sm:text-xl md:text-3xl font-bold text-neutral-400 font-equitan">
               2025
             </p>
-            <p className="text-sm font-light text-neutral-400 font-equitan">
+            <p className="text-[8px] sm:text-xs md:text-sm font-light text-neutral-400 font-equitan">
               Latest
             </p>
           </div>
@@ -336,9 +336,9 @@ export default function SplitModeOverlay() {
         <CertificationsList />
 
         {/* Footer */}
-        <div className="h-24" />
-        <div className="fixed bottom-6 left-10 animate-in">
-          <p className="text-sm font-light text-neutral-400 font-equitan">
+        <div className="h-12 sm:h-16 md:h-24" />
+        <div className="fixed bottom-2 left-2 sm:bottom-4 sm:left-4 md:bottom-6 md:left-10 animate-in">
+          <p className="text-[8px] sm:text-xs md:text-sm font-light text-neutral-400 font-equitan">
             Press <span className="font-bold text-neutral-600">ESC</span> to
             return
           </p>
@@ -467,7 +467,7 @@ function CertCard({
               <img
                 src={cert.certificateImage}
                 alt={`${cert.title} certificate`}
-                className="w-full h-full object-cover group-hover/preview:scale-105 transition-transform"
+                className="h-full object-cover group-hover/preview:scale-105 transition-transform"
               />
             </button>
           )}

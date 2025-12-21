@@ -331,16 +331,16 @@ export default function AboutOverlay() {
     <TooltipProvider>
       <div
         ref={overlayRef}
-        className="fixed left-0 top-0 w-full md:w-1/2 h-full z-20 bg-white overflow-hidden"
+        className="fixed left-0 top-0 w-[70%] md:w-1/2 h-full z-20 bg-white overflow-hidden"
         style={{ borderRight: "1px solid #e5e5e5" }}
       >
         {/* Close Button */}
         <button
           onClick={handleClose}
-          className="absolute top-8 right-8 z-30 group"
+          className="absolute top-2 right-2 sm:top-4 sm:right-4 md:top-8 md:right-8 z-30 group"
           aria-label="Close"
         >
-          <span className="text-sm font-light text-neutral-400 group-hover:text-neutral-900 transition-colors font-equitan">
+          <span className="text-[10px] sm:text-xs md:text-sm font-light text-neutral-400 group-hover:text-neutral-900 transition-colors font-equitan">
             Close
           </span>
         </button>
@@ -348,12 +348,12 @@ export default function AboutOverlay() {
         {/* Content */}
         <div
           ref={contentRef}
-          className="h-full overflow-y-auto px-10 py-12 scrollbar-hide"
+          className="h-full overflow-y-auto px-2 py-3 sm:px-4 sm:py-6 md:px-10 md:py-12 scrollbar-hide"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {/* Hero Header with Profile Image */}
-          <div className="mb-8 animate-in flex items-center gap-6">
-            <div className="w-24 h-24">
+          <div className="mb-2 sm:mb-4 md:mb-8 animate-in flex items-center gap-2 sm:gap-3 md:gap-6">
+            <div className="w-10 h-10 sm:w-16 sm:h-16 md:w-24 md:h-24">
               <img
                 src={profileImage}
                 alt="Keiru Cabili"
@@ -361,38 +361,38 @@ export default function AboutOverlay() {
               />
             </div>
             <div>
-              <h1 className="text-4xl lg:text-5xl font-bold text-neutral-900 font-equitan leading-tight">
+              <h1 className="text-base sm:text-2xl md:text-4xl lg:text-5xl font-bold text-neutral-900 font-equitan leading-tight">
                 Keiru Cabili
               </h1>
-              <p className="text-lg font-light text-neutral-400 font-equitan mt-2">
+              <p className="text-[10px] sm:text-sm md:text-lg font-light text-neutral-400 font-equitan mt-0.5 sm:mt-1 md:mt-2">
                 Full Stack Developer • Cloud Enthusiast
               </p>
             </div>
           </div>
 
           {/* Quick Stats */}
-          <div className="flex gap-10 mb-8 animate-in pb-8 border-b border-neutral-200">
+          <div className="flex gap-2 sm:gap-4 md:gap-10 mb-2 sm:mb-4 md:mb-8 animate-in pb-2 sm:pb-4 md:pb-8 border-b border-neutral-200">
             <div>
-              <p className="text-3xl font-bold text-neutral-900 font-equitan">
+              <p className="text-sm sm:text-xl md:text-3xl font-bold text-neutral-900 font-equitan">
                 4th Year
               </p>
-              <p className="text-sm font-light text-neutral-400 font-equitan">
+              <p className="text-[8px] sm:text-xs md:text-sm font-light text-neutral-400 font-equitan">
                 CS Student
               </p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-neutral-400 font-equitan">
+              <p className="text-sm sm:text-xl md:text-3xl font-bold text-neutral-400 font-equitan">
                 CIT-U
               </p>
-              <p className="text-sm font-light text-neutral-400 font-equitan">
+              <p className="text-[8px] sm:text-xs md:text-sm font-light text-neutral-400 font-equitan">
                 University
               </p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-neutral-400 font-equitan">
+              <p className="text-sm sm:text-xl md:text-3xl font-bold text-neutral-400 font-equitan">
                 Full Stack
               </p>
-              <p className="text-sm font-light text-neutral-400 font-equitan">
+              <p className="text-[8px] sm:text-xs md:text-sm font-light text-neutral-400 font-equitan">
                 Expertise
               </p>
             </div>
