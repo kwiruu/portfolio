@@ -4,12 +4,24 @@ import arrowKeysSvg from "../assets/arrow-keys.svg";
 import escKeySvg from "../assets/esc-key.svg";
 import eKeySvg from "../assets/e-key.svg";
 
+function checkIsMobile(): boolean {
+  if (typeof window === "undefined") return false;
+  const touchCapable = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  const coarse = window.matchMedia("(pointer: coarse)").matches;
+  return touchCapable || coarse;
+}
+
 export default function ControlsInfo() {
   const viewMode = useStore((state) => state.viewMode);
   const [opacity, setOpacity] = useState(0);
+  const [isMobile, setIsMobile] = useState(() => checkIsMobile());
 
   useEffect(() => {
-    if (viewMode === "FPS_MODE") {
+    setIsMobile(checkIsMobile());
+  }, []);
+
+  useEffect(() => {
+    if (viewMode === "FPS_MODE" && !isMobile) {
       // Fade in
       const fadeIn = setTimeout(() => setOpacity(1), 200);
       // Fade out after 5 seconds
@@ -19,9 +31,10 @@ export default function ControlsInfo() {
         clearTimeout(fadeOut);
       };
     }
-  }, [viewMode]);
+  }, [viewMode, isMobile]);
 
-  if (viewMode !== "FPS_MODE") return null;
+  // Hide on mobile or when not in FPS mode
+  if (viewMode !== "FPS_MODE" || isMobile) return null;
 
   return (
     <div
@@ -37,11 +50,11 @@ export default function ControlsInfo() {
           <img src={eKeySvg} alt="E Key" className="h-8 w-8" />
           <strong>Interact</strong>
         </div>
-      </div> 
-        <div className="flex items-center gap-2">
-          <img src={escKeySvg} alt="ESC Key" className="h-8 w-8" />
-          <strong>Exit</strong>
-        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <img src={escKeySvg} alt="ESC Key" className="h-8 w-8" />
+        <strong>Exit</strong>
+      </div>
     </div>
   );
 }

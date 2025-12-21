@@ -20,6 +20,11 @@ interface InteractiveObject {
   content: string;
 }
 
+interface CameraTarget {
+  position: [number, number, number];
+  lookAt: [number, number, number];
+}
+
 interface StoreState {
   // View mode state
   viewMode: ViewMode;
@@ -28,6 +33,10 @@ interface StoreState {
   // Split mode content type
   splitModeContent: SplitModeContent;
   setSplitModeContent: (content: SplitModeContent) => void;
+
+  // Camera target for split mode navigation
+  cameraTarget: CameraTarget | null;
+  setCameraTarget: (target: CameraTarget | null) => void;
 
   // Active object being viewed
   activeObject: InteractiveObject | null;
@@ -68,6 +77,9 @@ export const useStore = create<StoreState>((set) => ({
 
   splitModeContent: null,
   setSplitModeContent: (content) => set({ splitModeContent: content }),
+
+  cameraTarget: null,
+  setCameraTarget: (target) => set({ cameraTarget: target }),
 
   activeObject: null,
   setActiveObject: (object) => set({ activeObject: object }),

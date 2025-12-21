@@ -8,6 +8,7 @@ import ProjectsOverlay from "./components/ProjectsOverlay";
 import AboutOverlay from "./components/AboutOverlay";
 import TechnicalOverlay from "./components/TechnicalOverlay";
 import MobileControlsOverlay from "./components/MobileControlsOverlay";
+import OverlayNavigation from "./components/OverlayNavigation";
 
 function App() {
   return (
@@ -32,6 +33,9 @@ function App() {
 
       {/* Mobile controls overlay */}
       <MobileControlsOverlay />
+
+      {/* Split mode navigation - rendered outside overlays on the 3D side */}
+      <OverlayNavigation />
     </div>
   );
 }

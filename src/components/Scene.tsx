@@ -5,6 +5,7 @@ import Room from "../experience/Room";
 import Controls from "../experience/Controls";
 import TourController from "../experience/TourController";
 import SplitModeParallax from "../experience/SplitModeParallax";
+import CameraNavigator from "../experience/CameraNavigator";
 import * as THREE from "three";
 
 function CameraSetup() {
@@ -30,6 +31,7 @@ export default function Scene() {
     >
       <CameraSetup />
       <SplitModeParallax />
+      <CameraNavigator />
       {/* Main 3D Room */}
       <Room />
       {/* FPS Controls (only active in FPS_MODE) */}

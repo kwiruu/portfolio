@@ -36,29 +36,40 @@ export default function Controls() {
     viewModeRef.current = viewMode;
   }, [viewMode]);
 
-  const isMobileRef = useRef(false);
+  const checkMobile = () => {
+    if (typeof window === "undefined") return false;
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    const touchCapable =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    const narrow = window.innerWidth <= 1024 || window.innerHeight <= 768;
+    const uaMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    return coarse || touchCapable || narrow || uaMobile;
+  };
+
+  // Initialize with actual value immediately
+  const isMobileRef = useRef(checkMobile());
+
   useEffect(() => {
-    const checkMobile = () => {
-      if (typeof window === "undefined") return false;
-      const coarse = window.matchMedia("(pointer: coarse)").matches;
-      const touchCapable = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-      const narrow = window.innerWidth <= 1024 || window.innerHeight <= 768;
-      const uaMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-      return coarse || touchCapable || narrow || uaMobile;
-    };
+    // Re-check on mount and resize
     isMobileRef.current = checkMobile();
 
     const onResize = () => {
       isMobileRef.current = checkMobile();
     };
     window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    window.addEventListener("orientationchange", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("orientationchange", onResize);
+    };
   }, []);
 
   // Track if we've successfully locked the pointer at least once
   const hasLockedOnce = useRef(false);
 
   useEffect(() => {
+    console.log("[Controls] Mounted. isMobile:", isMobileRef.current);
+
     // Ensure camera rotation order is YXZ for FPS to avoid gimbal lock
     const camRef = { current: camera };
     const currentQuaternion = camera.quaternion.clone();
@@ -66,6 +77,7 @@ export default function Controls() {
     camRef.current.rotation.setFromQuaternion(currentQuaternion);
 
     if (isMobileRef.current) {
+      console.log("[Controls] Mobile mode - skipping pointer lock setup");
       return () => {
         setMobileMove({ x: 0, z: 0 });
       };
@@ -190,17 +202,52 @@ export default function Controls() {
   useEffect(() => {
     if (!isMobileRef.current) return;
 
+    // Track the touch identifier for camera look (to distinguish from joystick touches)
+    let lookTouchId: number | null = null;
     let lastX: number | null = null;
     let lastY: number | null = null;
 
-    const onTouchMove = (e: TouchEvent) => {
+    const isOnJoystick = (x: number, y: number): boolean => {
+      // Joystick is in bottom-left corner, approximately 150px from left and bottom
+      const joystickSize = 150;
+      const padding = 40;
+      return (
+        x < joystickSize + padding &&
+        y > window.innerHeight - joystickSize - padding
+      );
+    };
+
+    const onTouchStart = (e: TouchEvent) => {
       if (viewModeRef.current !== "FPS_MODE") return;
-      const touch = e.touches[0];
-      if (lastX === null || lastY === null) {
-        lastX = touch.clientX;
-        lastY = touch.clientY;
-        return;
+
+      // Find a touch that's not on the joystick to use for camera look
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const touch = e.changedTouches[i];
+        if (
+          !isOnJoystick(touch.clientX, touch.clientY) &&
+          lookTouchId === null
+        ) {
+          lookTouchId = touch.identifier;
+          lastX = touch.clientX;
+          lastY = touch.clientY;
+          break;
+        }
       }
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (viewModeRef.current !== "FPS_MODE" || lookTouchId === null) return;
+
+      // Find our tracked touch
+      let touch: Touch | null = null;
+      for (let i = 0; i < e.touches.length; i++) {
+        if (e.touches[i].identifier === lookTouchId) {
+          touch = e.touches[i];
+          break;
+        }
+      }
+
+      if (!touch || lastX === null || lastY === null) return;
 
       const deltaX = touch.clientX - lastX;
       const deltaY = touch.clientY - lastY;
@@ -215,16 +262,25 @@ export default function Controls() {
       );
     };
 
-    const onTouchEnd = () => {
-      lastX = null;
-      lastY = null;
+    const onTouchEnd = (e: TouchEvent) => {
+      // Check if our look touch ended
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        if (e.changedTouches[i].identifier === lookTouchId) {
+          lookTouchId = null;
+          lastX = null;
+          lastY = null;
+          break;
+        }
+      }
     };
 
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
     window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("touchend", onTouchEnd);
     window.addEventListener("touchcancel", onTouchEnd);
 
     return () => {
+      window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("touchcancel", onTouchEnd);

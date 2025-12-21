@@ -1,7 +1,12 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import { useStore } from "../store/useStore";
 import gsap from "gsap";
-import { TooltipProvider } from "./ui/tooltip";
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "./ui/tooltip";
 // MUI Timeline imports
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
@@ -213,12 +218,15 @@ const SOCIALS = [
   },
 ];
 
+const PHONE_NUMBER = "+63 998 164 6964";
+
 export default function AboutOverlay() {
   const viewMode = useStore((state) => state.viewMode);
   const splitModeContent = useStore((state) => state.splitModeContent);
   const exitSplitMode = useStore((state) => state.exitSplitMode);
   const overlayRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const [copiedPhone, setCopiedPhone] = useState(false);
 
   const handleClose = useCallback(() => {
     if (!overlayRef.current) return;
@@ -309,6 +317,16 @@ export default function AboutOverlay() {
 
   if (viewMode !== "SPLIT_MODE" || splitModeContent !== "about") return null;
 
+  const handleCopyPhone = async () => {
+    try {
+      await navigator.clipboard.writeText(PHONE_NUMBER);
+      setCopiedPhone(true);
+      setTimeout(() => setCopiedPhone(false), 1500);
+    } catch (err) {
+      console.error("Failed to copy phone number", err);
+    }
+  };
+
   return (
     <TooltipProvider>
       <div
@@ -344,7 +362,7 @@ export default function AboutOverlay() {
             </div>
             <div>
               <h1 className="text-4xl lg:text-5xl font-bold text-neutral-900 font-equitan leading-tight">
-                About Me
+                Keiru Cabili
               </h1>
               <p className="text-lg font-light text-neutral-400 font-equitan mt-2">
                 Full Stack Developer • Cloud Enthusiast
@@ -491,8 +509,37 @@ export default function AboutOverlay() {
                     {social.icon}
                   </a>
                 ))}
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={handleCopyPhone}
+                      className="flex items-center gap-2 rounded-lg bg-neutral-100 px-3 py-2 text-neutral-700 hover:bg-neutral-200 hover:text-neutral-900 transition-all"
+                      aria-label="Copy phone number"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="lucide lucide-phone-icon lucide-phone"
+                      >
+                        <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
+                      </svg>
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" align="center">
+                    <span className="text-sm font-equitan">
+                      {copiedPhone ? "Copied!" : "Copy number"}
+                    </span>
+                  </TooltipContent>
+                </Tooltip>
               </div>
-              <div className="flex flex-col gap-4 md:flex-row">
+              <div className="flex flex-col gap-4 lg:flex-row">
                 <div>
                   <div
                     className="badge-base LI-profile-badge"
@@ -511,7 +558,7 @@ export default function AboutOverlay() {
                     </a>
                   </div>
                 </div>
-                <div className="flex-1 rounded-xl border bg-gray-950 shadow-sm overflow-hidden h-min mt-6">
+                <div className="flex-1 rounded-xl border bg-gray-950 shadow-sm overflow-hidden h-min mt-6 max-w-80">
                   <div className="flex items-center gap-2 bg-gray-900 px-4 py-2">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

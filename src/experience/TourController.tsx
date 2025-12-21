@@ -4,6 +4,14 @@ import { useStore } from "../store/useStore";
 import gsap from "gsap";
 import * as THREE from "three";
 
+// Check if device is mobile/touch
+function checkIsMobile(): boolean {
+  if (typeof window === "undefined") return false;
+  const touchCapable = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  const coarse = window.matchMedia("(pointer: coarse)").matches;
+  return touchCapable || coarse;
+}
+
 // Object positions to look at during the tour
 // Order: About Me (PictureFrame), Technical Skills (Board), Projects (PC), Certificates (TrophyCup)
 const TOUR_LOOK_TARGETS = [
@@ -66,12 +74,15 @@ export default function TourController() {
     );
     camRef.current.rotation.set(startEuler.x, startEuler.y, 0, "YXZ");
 
-    // Try to lock the pointer (cursor) during the tour, similar to FPS mode
-    setTimeout(() => {
-      if (document.pointerLockElement !== gl.domElement) {
-        gl.domElement.requestPointerLock();
-      }
-    }, 50);
+    // Only try to lock pointer on desktop - skip on mobile
+    const isMobile = checkIsMobile();
+    if (!isMobile) {
+      setTimeout(() => {
+        if (document.pointerLockElement !== gl.domElement) {
+          gl.domElement.requestPointerLock();
+        }
+      }, 50);
+    }
 
     // Function to look north and then end tour
     const lookNorthAndEndTour = () => {
@@ -96,8 +107,12 @@ export default function TourController() {
         },
         onComplete: () => {
           isAnimating.current = false;
-          // Keep pointer locked seamlessly into FPS after tour
-          if (document.pointerLockElement !== gl.domElement) {
+          // Keep pointer locked seamlessly into FPS after tour (desktop only)
+          const isMobileDevice = checkIsMobile();
+          if (
+            !isMobileDevice &&
+            document.pointerLockElement !== gl.domElement
+          ) {
             gl.domElement.requestPointerLock();
           }
           // End tour and enter FPS mode to explore freely

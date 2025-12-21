@@ -7,6 +7,13 @@ import { useStore } from "../store/useStore";
 import * as THREE from "three";
 import gsap from "gsap";
 
+// Object data for mobile interact button
+const BOARD_OBJECT_DATA = {
+  id: "board",
+  title: "Board",
+  content: "projects",
+};
+
 interface BoardProps {
   position: [number, number, number];
   scale?: number;
@@ -40,6 +47,8 @@ export default function Board({
   const { camera } = useThree();
   const viewMode = useStore((state) => state.viewMode);
   const enterSplitMode = useStore((state) => state.enterSplitMode);
+  const targetedObject = useStore((state) => state.targetedObject);
+  const setTargetedObject = useStore((state) => state.setTargetedObject);
 
   // Clone the scene only once using useMemo
   const clonedScene = useMemo(() => scene.clone(), [scene]);
@@ -110,6 +119,24 @@ export default function Board({
     }
   });
 
+  // Update targeted object for mobile interact button
+  useEffect(() => {
+    if (isLookingAt) {
+      setTargetedObject(BOARD_OBJECT_DATA);
+    } else if (targetedObject?.id === BOARD_OBJECT_DATA.id) {
+      setTargetedObject(null);
+    }
+  }, [isLookingAt, targetedObject, setTargetedObject]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (targetedObject?.id === BOARD_OBJECT_DATA.id) {
+        setTargetedObject(null);
+      }
+    };
+  }, [targetedObject, setTargetedObject]);
+
   // Handle interaction (called by both E key and click)
   const handleInteraction = () => {
     // Calculate target position and rotation
@@ -175,11 +202,17 @@ export default function Board({
       }
     };
 
+    const handleMobileInteract = () => {
+      handleInteraction();
+    };
+
     document.addEventListener("keydown", handleKeyPress);
     document.addEventListener("click", handleClick);
+    window.addEventListener("mobile-interact", handleMobileInteract);
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
       document.removeEventListener("click", handleClick);
+      window.removeEventListener("mobile-interact", handleMobileInteract);
     };
   }, [isLookingAt, viewMode, enterSplitMode, camera, cameraTarget]);
 

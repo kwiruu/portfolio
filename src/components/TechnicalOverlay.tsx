@@ -11,6 +11,18 @@ import {
   TooltipTrigger,
 } from "./ui/tooltip";
 
+// Check if device is mobile
+function checkIsMobile(): boolean {
+  if (typeof window === "undefined") return false;
+  const touchCapable = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  const coarse = window.matchMedia("(pointer: coarse)").matches;
+  const uaMobile =
+    /Mobi|Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+  return touchCapable || coarse || uaMobile;
+}
+
 // Tech icons using Simple Icons CDN
 const TECH_ICONS: Record<string, string> = {
   // Languages
@@ -497,11 +509,19 @@ export default function TechnicalOverlay() {
     };
 
     const handleClick = (e: MouseEvent) => {
+      // Skip click-to-close on mobile to prevent touch event issues
+      if (checkIsMobile()) return;
+
+      const target = e.target as Node;
+
+      // Ignore clicks on the navigation component
+      const navElement = document.querySelector('[data-overlay-nav="true"]');
+      if (navElement && navElement.contains(target)) {
+        return;
+      }
+
       // Close if clicking outside the overlay (on the right side where 3D scene is)
-      if (
-        overlayRef.current &&
-        !overlayRef.current.contains(e.target as Node)
-      ) {
+      if (overlayRef.current && !overlayRef.current.contains(target)) {
         handleClose();
       }
     };
