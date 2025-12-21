@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useStore } from "../store/useStore";
 import gsap from "gsap";
 
@@ -7,6 +7,48 @@ export default function ObjectViewer() {
   const activeObject = useStore((state) => state.activeObject);
   const closeObject = useStore((state) => state.closeObject);
   const viewerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const touchCapable =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    const smallScreen =
+      window.innerWidth <= 1024 || window.innerHeight <= 768;
+    const uaMobile =
+      /Mobi|Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+    return touchCapable || coarse || smallScreen || uaMobile;
+  });
+  const [isLandscape, setIsLandscape] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.innerWidth >= window.innerHeight;
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(() => {
+        const touchCapable =
+          "ontouchstart" in window || navigator.maxTouchPoints > 0;
+        const coarse = window.matchMedia("(pointer: coarse)").matches;
+        const smallScreen =
+          window.innerWidth <= 1024 || window.innerHeight <= 768;
+        const uaMobile =
+          /Mobi|Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+          );
+        return touchCapable || coarse || smallScreen || uaMobile;
+      });
+      setIsLandscape(window.innerWidth >= window.innerHeight);
+    };
+
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (!viewerRef.current) return;
@@ -76,10 +118,12 @@ export default function ObjectViewer() {
           Back to Room
         </button>
 
-        {/* Hint */}
-        <p className="mt-5 text-sm text-gray-600 text-center">
-          Press ESC or click Back to return to FPS mode
-        </p>
+        {/* Hint (hidden on mobile landscape) */}
+        {!isMobile || !isLandscape ? (
+          <p className="mt-5 text-sm text-gray-600 text-center">
+            Press ESC or click Back to return to FPS mode
+          </p>
+        ) : null}
       </div>
     </div>
   );

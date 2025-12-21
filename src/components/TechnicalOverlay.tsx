@@ -541,7 +541,7 @@ export default function TechnicalOverlay() {
     <TooltipProvider>
       <div
         ref={overlayRef}
-        className="fixed left-0 top-0 w-1/2 h-full z-20 bg-white overflow-hidden"
+        className="fixed left-0 top-0 w-full md:w-1/2 h-full z-20 bg-white overflow-hidden"
         style={{ borderRight: "1px solid #e5e5e5" }}
       >
         {/* Close Button */}

@@ -8,6 +8,7 @@ import ProjectsOverlay from "./components/ProjectsOverlay";
 import AboutOverlay from "./components/AboutOverlay";
 import TechnicalOverlay from "./components/TechnicalOverlay";
 import MobileControlsOverlay from "./components/MobileControlsOverlay";
+import MobilePortraitOverlay from "./components/MobilePortraitOverlay";
 import OverlayNavigation from "./components/OverlayNavigation";
 
 function App() {
@@ -31,8 +32,11 @@ function App() {
       {/* Controls Info */}
       <ControlsInfo />
 
-      {/* Mobile controls overlay */}
+      {/* Mobile controls overlay (landscape only) */}
       <MobileControlsOverlay />
+
+      {/* Mobile portrait overlay - navigation only, no FPS */}
+      <MobilePortraitOverlay />
 
       {/* Split mode navigation - rendered outside overlays on the 3D side */}
       <OverlayNavigation />

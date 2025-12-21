@@ -119,6 +119,9 @@ export default function WebsiteOverlay() {
   const startTour = useStore((state) => state.startTour);
   const enterFPSMode = useStore((state) => state.enterFPSMode);
   const hasPlayedTour = useStore((state) => state.hasPlayedTour);
+  const setShowLandscapePrompt = useStore(
+    (state) => state.setShowLandscapePrompt
+  );
   const overlayRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
   const text1Ref = useRef<HTMLDivElement>(null);
@@ -248,9 +251,30 @@ export default function WebsiteOverlay() {
     }
   }, [viewMode]);
 
+  // Check if mobile portrait
+  const checkIsMobilePortrait = () => {
+    const touchCapable =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    const smallScreen = window.innerWidth <= 1024 || window.innerHeight <= 768;
+    const uaMobile =
+      /Mobi|Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+    const isMobile = touchCapable || coarse || smallScreen || uaMobile;
+    const isPortrait = window.innerHeight > window.innerWidth;
+    return isMobile && isPortrait;
+  };
+
   // Handle chess piece click with transition
   const handlePieceClick = () => {
     if (!pieceReady || isTransitioning) return;
+
+    // On mobile portrait, show landscape prompt instead
+    if (checkIsMobilePortrait()) {
+      setShowLandscapePrompt(true);
+      return;
+    }
 
     setIsTransitioning(true);
 

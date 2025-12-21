@@ -1,5 +1,23 @@
+import { useEffect, useState } from "react";
 import { useStore, type SplitModeContent } from "../store/useStore";
 import logo from "../assets/k-logo.svg";
+
+function checkIsMobile(): boolean {
+  if (typeof window === "undefined") return false;
+  const touchCapable = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  const coarse = window.matchMedia("(pointer: coarse)").matches;
+  const smallScreen = window.innerWidth <= 1024 || window.innerHeight <= 768;
+  const uaMobile =
+    /Mobi|Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+  return touchCapable || coarse || smallScreen || uaMobile;
+}
+
+function checkIsPortrait(): boolean {
+  if (typeof window === "undefined") return false;
+  return window.innerHeight > window.innerWidth;
+}
 
 // Navigation order for overlays
 const OVERLAY_ORDER: SplitModeContent[] = [
@@ -45,8 +63,26 @@ export default function OverlayNavigation() {
   const setSplitModeContent = useStore((state) => state.setSplitModeContent);
   const setCameraTarget = useStore((state) => state.setCameraTarget);
 
+  const [isMobilePortrait, setIsMobilePortrait] = useState(false);
+
+  useEffect(() => {
+    const handleChange = () => {
+      setIsMobilePortrait(checkIsMobile() && checkIsPortrait());
+    };
+    handleChange();
+
+    window.addEventListener("resize", handleChange);
+    window.addEventListener("orientationchange", handleChange);
+
+    return () => {
+      window.removeEventListener("resize", handleChange);
+      window.removeEventListener("orientationchange", handleChange);
+    };
+  }, []);
+
+  // Don't show on mobile portrait - MobilePortraitOverlay handles that
   // Only show when in split mode with valid content
-  if (viewMode !== "SPLIT_MODE" || !current) return null;
+  if (isMobilePortrait || viewMode !== "SPLIT_MODE" || !current) return null;
 
   const currentIndex = OVERLAY_ORDER.indexOf(current);
   const prevContent = currentIndex > 0 ? OVERLAY_ORDER[currentIndex - 1] : null;

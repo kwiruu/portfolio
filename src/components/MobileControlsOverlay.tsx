@@ -19,6 +19,11 @@ function checkIsMobile(): boolean {
   return touchCapable || coarse || smallScreen || uaMobile;
 }
 
+function checkIsLandscape(): boolean {
+  if (typeof window === "undefined") return true;
+  return window.innerWidth > window.innerHeight;
+}
+
 function useIsMobile() {
   // Initialize with check result - runs client-side only in Vite
   const [isMobile, setIsMobile] = useState(() => checkIsMobile());
@@ -47,6 +52,24 @@ function useIsMobile() {
   return isMobile;
 }
 
+function useIsLandscape() {
+  const [isLandscape, setIsLandscape] = useState(() => checkIsLandscape());
+
+  useEffect(() => {
+    const handleChange = () => setIsLandscape(checkIsLandscape());
+
+    window.addEventListener("resize", handleChange);
+    window.addEventListener("orientationchange", handleChange);
+
+    return () => {
+      window.removeEventListener("resize", handleChange);
+      window.removeEventListener("orientationchange", handleChange);
+    };
+  }, []);
+
+  return isLandscape;
+}
+
 export default function MobileControlsOverlay() {
   const viewMode = useStore((state) => state.viewMode);
   const targetedObject = useStore((state) => state.targetedObject);
@@ -54,6 +77,7 @@ export default function MobileControlsOverlay() {
   const setMobileMove = useStore((state) => state.setMobileMove);
 
   const isMobile = useIsMobile();
+  const isLandscape = useIsLandscape();
   const baseRef = useRef<HTMLDivElement>(null);
   const knobRef = useRef<HTMLDivElement>(null);
   const activePointer = useRef<number | null>(null);
@@ -63,8 +87,9 @@ export default function MobileControlsOverlay() {
     return () => setMobileMove({ x: 0, z: 0 });
   }, [setMobileMove]);
 
-  // Don't render if not mobile or not in FPS mode
-  if (!isMobile || viewMode !== "FPS_MODE") {
+  // Don't render if not mobile, not in FPS mode, or in portrait mode
+  // Portrait mobile users use overlay navigation instead
+  if (!isMobile || viewMode !== "FPS_MODE" || !isLandscape) {
     return null;
   }
 
