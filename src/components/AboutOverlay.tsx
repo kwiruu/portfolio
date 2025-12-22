@@ -40,7 +40,7 @@ const PIXEL_ARTS = [
 // Career & education timeline
 const TIMELINE = [
   {
-    year: "2024 - Present",
+    year: "May - Oct 2025",
     title: "Software Developer Intern",
     org: "Talleco JobTarget Inc.",
     location: "Cebu City, Philippines",

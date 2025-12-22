@@ -169,6 +169,66 @@ const PROJECTS = [
     featured: true,
     images: ["hum-ai.png", "hum-ai1.png", "hum-ai2.png", "hum-ai3.png"],
   },
+  {
+    id: "bitwise",
+    title: "BITWISE",
+    description:
+      "Interactive web-based learning platform for Boolean algebra with step-by-step simplification, visual K-Map minimizer, and logic circuit visualizer. Features adaptive lessons and quizzes for self-paced learning.",
+    about:
+      "Bitwise is a comprehensive web-based interactive learning platform designed to help students understand Boolean algebra through step-by-step simplification and visual representation. Unlike traditional solvers that only show final answers, Bitwise explains each applied Boolean law and displays the full solution process, making it an invaluable tool for learning digital logic. The platform includes three core features: a Boolean equation solver that breaks down simplification steps, a visual Karnaugh Map (K-Map) minimizer for optimizing Boolean expressions, and a logic circuit visualizer that converts expressions into corresponding logic gate diagrams. Students can follow along with adaptive lessons tailored to their learning pace and test their understanding through interactive quizzes. Developed as a Software Engineering academic project at Cebu Institute of Technology - University using NestJS for the backend and React for the frontend, Bitwise focuses on improving conceptual understanding of digital logic through guided, visual, and interactive learning experiences. The platform bridges the gap between theory and practice, helping students master Boolean algebra fundamentals essential for computer science and electrical engineering.",
+    tech: ["NestJS", "React", "TypeScript", "Node.js", "JavaScript"],
+    libraries: [
+      "React Router",
+      "Axios",
+      "TypeORM",
+      "Class Validator",
+      "JWT",
+      "Tailwind CSS",
+    ],
+    tools: ["Git", "Render", "TypeScript Compiler", "npm", "Figma"],
+    year: "2025",
+    repositories: [
+      "https://github.com/One-Team-One-Goal/bitwise-server",
+      "https://github.com/One-Team-One-Goal/bitwise-ui",
+    ],
+    website: "https://dev-bitwise.onrender.com/roadmap",
+    featured: true,
+    images: ["bitwise1.png", "bitwise2.png", "bitwise3.png", "bitwise4.png"],
+  },
+  {
+    id: "portfolio",
+    title: "PORTFOLIO",
+    description:
+      "Immersive 3D portfolio website featuring first-person navigation through an interactive virtual room. Built with React Three Fiber, showcasing projects, skills, and experience in a unique spatial environment.",
+    about:
+      "This portfolio website reimagines the traditional web portfolio by creating an immersive 3D experience where visitors can explore a virtual room in first-person perspective. Built with React, TypeScript, and React Three Fiber (R3F), the project leverages Three.js to render a fully interactive 3D environment complete with realistic lighting, shadows, and physics-based collision detection. Visitors can navigate using WASD controls (desktop) or touch controls (mobile) to move around the room and interact with various objects that reveal different sections of the portfolio. The experience includes interactive picture frames displaying projects, a trophy showcasing achievements, and a computer desk revealing technical skills. The application features smooth camera transitions, split-screen overlay panels for detailed content viewing, and responsive design that adapts to both desktop and mobile devices. State management is handled through Zustand, animations are powered by GSAP, and the entire experience is optimized for performance with lazy loading and efficient rendering. This portfolio demonstrates expertise in 3D web development, creative UI/UX design, and modern frontend technologies while providing visitors with a memorable and engaging way to explore professional work.",
+    tech: [
+      "React",
+      "TypeScript",
+      "Three.js",
+      "React Three Fiber",
+      "JavaScript",
+    ],
+    libraries: [
+      "React Three Fiber",
+      "React Three Drei",
+      "GSAP",
+      "Zustand",
+      "Tailwind CSS",
+      "Framer Motion",
+    ],
+    tools: ["Vite", "TypeScript Compiler", "Blender", "Git", "Vercel"],
+    year: "2025",
+    repository: "https://github.com/kwiruu/portfolio",
+    website: "https://www.keiru.dev",
+    featured: true,
+    images: [
+      "portfolio1.png",
+      "portfolio2.png",
+      "portfolio3.png",
+      "portfolio4.png",
+    ],
+  },
 ];
 
 export default function ProjectsOverlay() {
