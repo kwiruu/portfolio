@@ -13,23 +13,23 @@ import awsf from "../assets/certificateImages/awsf.png";
 
 // Company logo URLs (using official brand CDNs/URLs)
 const LOGOS = {
-  isc2: "https://media.licdn.com/dms/image/v2/D4E0BAQEANDNp1O78-g/company-logo_100_100/company-logo_100_100/0/1692269546870?e=1766620800&v=beta&t=06etoVh1DXY6-_qnTRqLgAUCO_7gv1Z8sazfo_T3YWc",
-  aws: "https://media.licdn.com/dms/image/v2/D4E0BAQFqdm1TZ-RZKQ/company-logo_100_100/B4EZgOay6gHEAY-/0/1752588562343/amazon_web_services_logo?e=1766620800&v=beta&t=xnKbYM8BEAFSodjeuImyO5vpqn4epwhJFMK9WiHrY8Y",
+  isc2: "https://upload.wikimedia.org/wikipedia/commons/8/8c/%28ISC%29%C2%B2_logo_%28vectorized%29.svg",
+  aws: "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg",
   oracle:
-    "https://media.licdn.com/dms/image/v2/D4E0BAQHYCgYovUuPtQ/company-logo_100_100/company-logo_100_100/0/1665755678957/oracle_logo?e=1766620800&v=beta&t=b71WjRLW7LG5SXhSpwJ7ROIu0kwYC_s2jHHNWrIHl1g",
+    "https://upload.wikimedia.org/wikipedia/commons/e/e1/Oracle_Corporation_logo.svg",
   microsoft:
     "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
   google:
-    "https://media.licdn.com/dms/image/v2/D560BAQFV-ds_iFfVSQ/company-logo_100_100/company-logo_100_100/0/1698660876286?e=1766620800&v=beta&t=W6MsH1e1r2xptNlOzwMyEYgpe6PXwRXwwuzLTkrn-Go",
+    "https://upload.wikimedia.org/wikipedia/commons/4/4c/GCP-1.png",
   linux: "https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg",
   zuitt:
     "https://media.licdn.com/dms/image/v2/C560BAQFFcmd6tKsv5Q/company-logo_100_100/company-logo_100_100/0/1630609526598/tuitt_logo?e=1766620800&v=beta&t=oHwg7D8g4CEmjfCh6MwRhK7T3FMAP0_uaVq-K2QT4o4",
   linkedin:
-    "https://media.licdn.com/dms/image/v2/C560BAQHaVYd13rRz3A/company-logo_100_100/company-logo_100_100/0/1638831590218/linkedin_logo?e=1766620800&v=beta&t=eOPbKo2R3Y-Sqe5Cf6n17YORrbT2NpKNEna2M8xpYmQ",
+    "https://upload.wikimedia.org/wikipedia/commons/7/7e/LinkedIn_PNG16.png",
   udemy:
-    "https://media.licdn.com/dms/image/v2/D560BAQEf_NHzN2yVQg/company-logo_100_100/company-logo_100_100/0/1723593046388/udemy_logo?e=1766620800&v=beta&t=MDQ91-Gf8dlhTSsAgM0g5Dl4-busATcAugZqMixev3A",
+    "https://upload.wikimedia.org/wikipedia/commons/e/e3/Udemy_logo.svg",
   codecademy:
-    "https://media.licdn.com/dms/image/v2/D4E0BAQH81kKlXtE0og/company-logo_100_100/company-logo_100_100/0/1720724787444/codecademy_logo?e=1766620800&v=beta&t=4xewklsBsyswG4h__3ZQkOmugV9L8GInVljj90QvzjY",
+    "https://upload.wikimedia.org/wikipedia/commons/b/b1/Cib-codecademy_%28CoreUI_Icons_v1.0.0%29.svg",
   codechum:
     "https://media.licdn.com/dms/image/v2/C510BAQGx_-DNtSRFhw/company-logo_100_100/company-logo_100_100/0/1630568170174?e=1766620800&v=beta&t=6nst0-4L3qsnHMPx8gFjQ1UjK7hZEPVek4-oSyFPei8",
 };
@@ -46,7 +46,7 @@ const CERTIFICATIONS = [
     skills: ["Azure", "SaaS", "IaaS", "PaaS"],
     credentialId: "4EACDBD230361567",
     credentialUrl:
-      "https://learn.microsoft.com/api/credentials/share/en-us/4EACDBD230361567",
+      "https://learn.microsoft.com/en-us/users/keirucabili-5418/credentials/4eacdbd230361567",
     certificateImage: azureCert,
   },
   {
@@ -101,7 +101,7 @@ const CERTIFICATIONS = [
     skills: ["OCI", "Cloud Computing", "Oracle Cloud"],
     credentialId: "322515041OCI25FNDCFA",
     credentialUrl:
-      "https://catalog-education.oracle.com/pls/certview/sharebadge?id=322515041OCI25FNDCFA",
+      "https://catalog-education.oracle.com/pls/certview/sharebadge?id=8AA73A7E3A8F1D674EE38603604D8A373C50484342F7C05ACC595421D130F96E",
     certificateImage: oracleCert,
   },
   {
@@ -114,7 +114,7 @@ const CERTIFICATIONS = [
     skills: ["GKE", "GCP", "Cloud Run"],
     credentialId: "16939170",
     credentialUrl:
-      "https://www.cloudskillsboost.google/public_profiles/16939170",
+      "https://www.skills.google/public_profiles/1f5c9616-b7df-455b-836c-8bf8f4481aa0/badges/16939170",
   },
   {
     id: "kubernetes",
@@ -126,7 +126,7 @@ const CERTIFICATIONS = [
     skills: ["Kubernetes", "GKE", "Docker", "Containers"],
     credentialId: "16931396",
     credentialUrl:
-      "https://www.cloudskillsboost.google/public_profiles/16931396",
+      "https://www.skills.google/public_profiles/1f5c9616-b7df-455b-836c-8bf8f4481aa0/badges/16931396",
   },
   {
     id: "linux",
@@ -137,15 +137,8 @@ const CERTIFICATIONS = [
     logo: LOGOS.linux,
     skills: ["Linux", "CLI", "Shell", "Boot Loaders"],
     certificateImage: linuxCert,
-  },
-  {
-    id: "zuitt",
-    title: "TECH CAREER PROGRAM",
-    shortTitle: "FULLSTACK",
-    issuer: "ZUITT BOOTCAMP",
-    date: "APR 2025",
-    logo: LOGOS.zuitt,
-    skills: ["JavaScript", "DOM", "Full Stack"],
+    credentialUrl:
+    "https://www.credly.com/badges/954e413d-e24b-4c7f-8e04-9137ea4c9f43/public_url",
   },
   {
     id: "nodejs",
@@ -316,7 +309,7 @@ export default function SplitModeOverlay() {
           </div>
           <div>
             <p className="text-sm sm:text-xl md:text-3xl font-bold text-neutral-400 font-equitan">
-              5
+              4
             </p>
             <p className="text-[8px] sm:text-xs md:text-sm font-light text-neutral-400 font-equitan">
               Cloud Platforms

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import { useStore } from "../store/useStore";
 import gsap from "gsap";
+import { Cog, Fullscreen } from "lucide-react";
 
 // Project data
 const PROJECTS = [
@@ -16,7 +17,7 @@ const PROJECTS = [
     tools: ["XAMPP", "phpMyAdmin", "Git"],
     year: "2023",
     repository: "https://github.com/kwiruu/ChumCode",
-    featured: true,
+    featured: false,
     images: ["chumcode.png"],
   },
   {
@@ -31,7 +32,7 @@ const PROJECTS = [
     tools: ["Android Studio", "Gradle", "Git"],
     year: "2023",
     repository: "https://github.com/kwiruu/EffortList-",
-    featured: true,
+    featured: false,
     images: [
       "effortlist.jpg",
       "effortlist1.jpg",
@@ -52,29 +53,51 @@ const PROJECTS = [
     tools: ["Git", "GitHub"],
     year: "2024",
     repository: "https://github.com/rei-naissance/Litterbox",
-    featured: true,
+    featured: false,
     images: ["litterbox.gif"],
   },
   {
-    id: "undercooked",
-    title: "UNDERCOOKED",
+    id: "finitestate",
+    title: "FINITE STATE MACHINE",
     description:
-      "Overcooked-inspired cooking simulation game built with libGDX. Features cooperative multiplayer gameplay, time management, recipe preparation, and level progression with MySQL database integration.",
+      "Interactive character movement system demonstrating finite state machine concepts using Pygame. Features sprite animations, real-time state visualization, and physics-based movement with idle, walking, and jumping states.",
     about:
-      "Undercooked is a fast-paced cooking simulation game developed as a final capstone project for Object Oriented Programming 2 at Cebu Institute of Technology - University. The game challenges players to prepare various dishes under time pressure, managing ingredients, cooking stations, and order delivery. Built with libGDX framework, the game features multiple levels with increasing difficulty, animated character sprites, interactive cooking stations (chopping boards, stoves, ovens, rice cookers), and a complete recipe system. The game integrates MySQL database through XAMPP for storing player data, high scores, and game progress. With pixel art aesthetics created in Aseprite and custom level design in Tiled map editor, Undercooked delivers an engaging cooperative multiplayer experience with sound effects and 8-bit background music.",
-    tech: ["Java", "libGDX", "MySQL", "Gradle"],
-    libraries: ["Tween Engine", "LWJGL3"],
-    tools: ["IntelliJ IDEA", "XAMPP", "Aseprite", "Tiled", "Gradle"],
-    year: "2024",
-    repository: "https://github.com/kwiruu/Undercooked-",
-    featured: true,
+      "Finite State Machine is an educational Python game that demonstrates FSM (Finite State Machine) concepts through an interactive character movement system. Built with Pygame, the project showcases how state machines control character behavior with three distinct states: idle, walking, and jumping. The character responds to keyboard input (A/D for movement, W for jumping) and transitions between states following a defined state transition table. Each state has its own sprite animation, and the current state is displayed in real-time on the screen for educational purposes. The jumping mechanic includes gravity physics that brings the character back down to the floor. This project serves as a practical demonstration of FSM theory in game development, making abstract programming concepts tangible through visual feedback and interactive gameplay.",
+    tech: ["Python", "Pygame"],
+    libraries: ["Pygame"],
+    tools: ["Python 3.x", "Git"],
+    year: "2025",
+    repository: "https://github.com/kwiruu/finite-state-machine",
+    featured: false,
+    images: ["fsm.png", "fsm1.png"],
+  },
+  {
+    id: "collabora",
+    title: "COLLABORA",
+    description:
+      "Real-time collaboration platform connecting individuals based on shared goals, interests, and skills. Features intelligent matchmaking, real-time messaging, profile customization, and collaborative work sessions.",
+    about:
+      "Collabora is a full-stack web application designed to help students and professionals connect and collaborate based on shared objectives. The platform features a sophisticated real-time matching system that pairs users with compatible collaborators by analyzing their interests, skills, and current goals. Built with ASP.NET Core for the backend and React with TailwindCSS for the frontend, Collabora provides a seamless user experience with real-time messaging powered by SignalR. Users can create detailed profiles highlighting their skills and interests, participate in focused study or work sessions, and communicate efficiently through integrated chat features. The application supports both one-on-one connections and team collaborations, making it ideal for exam preparation, group projects, or brainstorming sessions. With its emphasis on goal-oriented matchmaking and real-time communication, Collabora fosters meaningful connections that drive both academic and professional growth.",
+    tech: ["ASP.NET Core", "C#", "React", "Node.js", "JavaScript"],
+    libraries: [
+      "TailwindCSS",
+      "SignalR",
+      "React Router",
+      "Entity Framework Core",
+      "Swiper",
+    ],
+    tools: ["Visual Studio", "Create React App", "ESLint", "Git", "Figma"],
+    year: "2025",
+    repositories: [
+      "https://github.com/Mars0827/backend_collabora",
+      "https://github.com/kwiruu/collabora-frontend",
+    ],
+    featured: false,
     images: [
-      "undercooked.png",
-      "undercooked1.gif",
-      "undercooked2.png",
-      "undercooked3.gif",
-      "undercooked4.png",
-      "undercooked6.gif",
+      "collabora.gif",
+      "collabora1.png",
+      "collabora2.png",
+      "collabora3.png",
     ],
   },
   {
@@ -100,47 +123,25 @@ const PROJECTS = [
     images: ["jssneaks.png", "jssneaks1.png", "jssneaks2.png", "jssneaks3.png"],
   },
   {
-    id: "finitestate",
-    title: "FINITE STATE MACHINE",
+    id: "undercooked",
+    title: "UNDERCOOKED",
     description:
-      "Interactive character movement system demonstrating finite state machine concepts using Pygame. Features sprite animations, real-time state visualization, and physics-based movement with idle, walking, and jumping states.",
+      "Overcooked-inspired cooking simulation game built with libGDX. Features cooperative multiplayer gameplay, time management, recipe preparation, and level progression with MySQL database integration.",
     about:
-      "Finite State Machine is an educational Python game that demonstrates FSM (Finite State Machine) concepts through an interactive character movement system. Built with Pygame, the project showcases how state machines control character behavior with three distinct states: idle, walking, and jumping. The character responds to keyboard input (A/D for movement, W for jumping) and transitions between states following a defined state transition table. Each state has its own sprite animation, and the current state is displayed in real-time on the screen for educational purposes. The jumping mechanic includes gravity physics that brings the character back down to the floor. This project serves as a practical demonstration of FSM theory in game development, making abstract programming concepts tangible through visual feedback and interactive gameplay.",
-    tech: ["Python", "Pygame"],
-    libraries: ["Pygame"],
-    tools: ["Python 3.x", "Git"],
-    year: "2025",
-    repository: "https://github.com/kwiruu/finite-state-machine",
-    featured: true,
-    images: ["fsm.png", "fsm1.png"],
-  },
-  {
-    id: "collabora",
-    title: "COLLABORA",
-    description:
-      "Real-time collaboration platform connecting individuals based on shared goals, interests, and skills. Features intelligent matchmaking, real-time messaging, profile customization, and collaborative work sessions.",
-    about:
-      "Collabora is a full-stack web application designed to help students and professionals connect and collaborate based on shared objectives. The platform features a sophisticated real-time matching system that pairs users with compatible collaborators by analyzing their interests, skills, and current goals. Built with ASP.NET Core for the backend and React with TailwindCSS for the frontend, Collabora provides a seamless user experience with real-time messaging powered by SignalR. Users can create detailed profiles highlighting their skills and interests, participate in focused study or work sessions, and communicate efficiently through integrated chat features. The application supports both one-on-one connections and team collaborations, making it ideal for exam preparation, group projects, or brainstorming sessions. With its emphasis on goal-oriented matchmaking and real-time communication, Collabora fosters meaningful connections that drive both academic and professional growth.",
-    tech: ["ASP.NET Core", "C#", "React", "Node.js", "JavaScript"],
-    libraries: [
-      "TailwindCSS",
-      "SignalR",
-      "React Router",
-      "Entity Framework Core",
-      "Swiper",
-    ],
-    tools: ["Visual Studio", "Create React App", "ESLint", "Git", "Figma"],
-    year: "2025",
-    repositories: [
-      "https://github.com/Mars0827/backend_collabora",
-      "https://github.com/kwiruu/collabora-frontend",
-    ],
+      "Undercooked is a fast-paced cooking simulation game developed as a final capstone project for Object Oriented Programming 2 at Cebu Institute of Technology - University. The game challenges players to prepare various dishes under time pressure, managing ingredients, cooking stations, and order delivery. Built with libGDX framework, the game features multiple levels with increasing difficulty, animated character sprites, interactive cooking stations (chopping boards, stoves, ovens, rice cookers), and a complete recipe system. The game integrates MySQL database through XAMPP for storing player data, high scores, and game progress. With pixel art aesthetics created in Aseprite and custom level design in Tiled map editor, Undercooked delivers an engaging cooperative multiplayer experience with sound effects and 8-bit background music.",
+    tech: ["Java", "libGDX", "MySQL", "Gradle"],
+    libraries: ["Tween Engine", "LWJGL3"],
+    tools: ["IntelliJ IDEA", "XAMPP", "Aseprite", "Tiled", "Gradle"],
+    year: "2024",
+    repository: "https://github.com/kwiruu/Undercooked-",
     featured: true,
     images: [
-      "collabora.gif",
-      "collabora1.png",
-      "collabora2.png",
-      "collabora3.png",
+      "undercooked.png",
+      "undercooked1.gif",
+      "undercooked2.png",
+      "undercooked3.gif",
+      "undercooked4.png",
+      "undercooked6.gif",
     ],
   },
   {
@@ -229,6 +230,65 @@ const PROJECTS = [
       "portfolio4.png",
     ],
   },
+  {
+    id: "kwentamo",
+    title: "KWENTAMO",
+    description:
+      "Intelligent business management platform for Filipino MSMEs with AI-powered receipt scanning, automated expense categorization, inventory tracking, and financial analytics. Features microservices architecture with multi-engine OCR processing.",
+    about:
+      "KwentaMo is a comprehensive business management solution designed specifically for Filipino micro, small, and medium enterprises (MSMEs). The platform leverages cutting-edge AI and machine learning to automate tedious bookkeeping tasks through intelligent receipt scanning using a multi-engine OCR system (RapidOCR, PaddleOCR, EasyOCR, Donut) with fallback capabilities for maximum accuracy. The system automatically extracts vendor information, line items, totals, and intelligently categorizes expenses using fuzzy matching and a learning algorithm that adapts to user corrections. Beyond receipt processing, KwentaMo provides complete inventory management with period tracking, recipe costing with labor and overhead calculations, sales tracking with profit analysis, and comprehensive financial reporting. The application features a microservices architecture with three main services: a NestJS backend API with PostgreSQL and Prisma ORM, a React Router frontend with server-side rendering and real-time updates via Supabase, and a Python FastAPI receipt processing microservice. Users can export financial data to Excel and PDF, manage multiple document types (receipts, utility bills, rent), and access detailed analytics through interactive charts powered by Recharts. With Supabase authentication, JWT-based sessions, row-level security, and containerized deployment across Vercel, Render, and HuggingFace, KwentaMo delivers enterprise-grade reliability while remaining accessible to small businesses.",
+    tech: [
+      "React Router",
+      "TypeScript",
+      "NestJS",
+      "Python",
+      "FastAPI",
+      "PostgreSQL",
+    ],
+    libraries: [
+      "React 19",
+      "Tailwind CSS",
+      "Prisma",
+      "Supabase",
+      "TanStack Query",
+      "Zustand",
+      "shadcn/ui",
+      "Radix UI",
+      "RapidOCR",
+      "PaddleOCR",
+      "EasyOCR",
+      "Recharts",
+      "React Hook Form",
+      "Zod",
+    ],
+    tools: [
+      "Vite",
+      "Docker",
+      "Vercel",
+      "Render",
+      "HuggingFace",
+      "Git",
+      "Jest",
+      "ESLint",
+      "Prettier",
+    ],
+    year: "2026",
+    repositories: [
+      "https://github.com/kwiruu/kwenta-mo-app",
+      "https://github.com/kwiruu/kwenta-mo-api",
+      "https://huggingface.co/spaces/kwiruu/kwentamo-receipt-scanner/tree/main",
+    ],
+    website: "https://kwenta-mo.vercel.app/",
+    featured: true,
+    images: [
+      "kwentamo1.png",
+      "kwentamo2.png",
+      "kwentamo3.png",
+      "kwentamo4.png",
+      "kwentamo5.png",
+      "kwentamo6.png",
+    ],
+  },
 ];
 
 export default function ProjectsOverlay() {
@@ -237,6 +297,54 @@ export default function ProjectsOverlay() {
   const exitSplitMode = useStore((state) => state.exitSplitMode);
   const overlayRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  // Image overlay state
+  const [isImageOverlayOpen, setIsImageOverlayOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentProject, setCurrentProject] = useState<Project | null>(null);
+
+  const openImageOverlay = (project: Project, imageIndex: number) => {
+    setCurrentProject(project);
+    setCurrentImageIndex(imageIndex);
+    setIsImageOverlayOpen(true);
+  };
+
+  const closeImageOverlay = () => {
+    setIsImageOverlayOpen(false);
+  };
+
+  const nextImage = () => {
+    if (
+      currentProject?.images &&
+      currentImageIndex < currentProject.images.length - 1
+    ) {
+      setCurrentImageIndex(currentImageIndex + 1);
+    }
+  };
+
+  const prevImage = () => {
+    if (currentImageIndex > 0) {
+      setCurrentImageIndex(currentImageIndex - 1);
+    }
+  };
+
+  // Keyboard navigation for image overlay
+  useEffect(() => {
+    if (!isImageOverlayOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        prevImage();
+      } else if (e.key === "ArrowRight") {
+        nextImage();
+      } else if (e.key === "Escape") {
+        closeImageOverlay();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isImageOverlayOpen, currentImageIndex, currentProject]);
 
   const handleClose = useCallback(() => {
     if (!overlayRef.current) return;
@@ -259,7 +367,7 @@ export default function ProjectsOverlay() {
       gsap.fromTo(
         overlayRef.current,
         { x: "-100%", opacity: 0 },
-        { x: "0%", opacity: 1, duration: 0.6, ease: "power3.out" }
+        { x: "0%", opacity: 1, duration: 0.6, ease: "power3.out" },
       );
 
       const elements = contentRef.current.querySelectorAll(".animate-in");
@@ -273,7 +381,7 @@ export default function ProjectsOverlay() {
           stagger: 0.08,
           delay: 0.3,
           ease: "power3.out",
-        }
+        },
       );
     }
   }, [viewMode, splitModeContent]);
@@ -294,83 +402,190 @@ export default function ProjectsOverlay() {
   if (viewMode !== "SPLIT_MODE" || splitModeContent !== "projects") return null;
 
   return (
-    <div
-      ref={overlayRef}
-      className="fixed left-0 top-0 w-[70%] md:w-1/2 h-full z-20 bg-white overflow-hidden"
-      style={{ borderRight: "1px solid #e5e5e5" }}
-    >
-      {/* Close Button */}
-      <button
-        onClick={handleClose}
-        className="absolute top-2 right-2 sm:top-4 sm:right-4 md:top-8 md:right-8 z-30 group"
-        aria-label="Close"
-      >
-        <span className="text-[10px] sm:text-xs md:text-sm font-light text-neutral-400 group-hover:text-neutral-900 transition-colors font-equitan">
-          Close
-        </span>
-      </button>
+    <>
+      {/* Full Panel Image Overlay */}
+      {isImageOverlayOpen && currentProject?.images && (
+        <div
+          className="fixed left-0 top-0 w-[70%] md:w-1/2 h-full z-50 bg-black bg-opacity-95 flex items-center justify-center"
+          onClick={closeImageOverlay}
+        >
+          {/* Close button */}
+          <button
+            onClick={closeImageOverlay}
+            className="absolute top-6 right-6 text-white hover:text-neutral-300 transition-colors z-10 bg-black bg-opacity-50 rounded-full p-2"
+            aria-label="Close"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
 
-      {/* Content */}
+          {/* Navigation buttons */}
+          {currentProject.images.length > 1 && (
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  prevImage();
+                }}
+                disabled={currentImageIndex === 0}
+                className="absolute left-6 top-1/2 -translate-y-1/2 p-1 bg-neutral-800 hover:bg-neutral-700 rounded-full text-whitedisabled:opacity-30 disabled:cursor-not-allowed transition-all z-10 shadow-lg"
+                aria-label="Previous image"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  nextImage();
+                }}
+                disabled={
+                  currentImageIndex === currentProject.images.length - 1
+                }
+                className="absolute right-6 top-1/2 -translate-y-1/2 p-1 bg-neutral-800 hover:bg-neutral-700 rounded-full text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all z-10 shadow-lg"
+                aria-label="Next image"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+            </>
+          )}
+
+          {/* Image container */}
+          <div
+            className="relative max-h-[90vh] max-w-[90%] flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={`/projectImages/${currentProject.images[currentImageIndex]}`}
+              alt={`${currentProject.title} - Image ${currentImageIndex + 1}`}
+              className="max-h-[90vh] max-w-full object-contain"
+            />
+
+            {/* Image counter */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-black bg-opacity-60 rounded-full text-white text-sm font-equitan">
+              {currentImageIndex + 1} / {currentProject.images.length}
+            </div>
+          </div>
+        </div>
+      )}
+
       <div
-        ref={contentRef}
-        className="h-full overflow-y-auto px-2 py-3 sm:px-4 sm:py-6 md:px-10 md:py-12 scrollbar-hide"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        ref={overlayRef}
+        className="fixed left-0 top-0 w-[70%] md:w-1/2 h-full z-20 bg-white overflow-hidden"
+        style={{ borderRight: "1px solid #e5e5e5" }}
       >
-        {/* Hero Header */}
-        <div className="mb-2 sm:mb-4 md:mb-8 animate-in">
-          <h1 className="text-base sm:text-2xl md:text-4xl lg:text-5xl font-bold text-neutral-900 font-equitan leading-tight">
-            Projects
-          </h1>
-          <p className="text-[10px] sm:text-sm md:text-lg font-light text-neutral-400 font-equitan mt-0.5 sm:mt-1 md:mt-2">
-            Selected works & experiments
-          </p>
-        </div>
+        {/* Close Button */}
+        <button
+          onClick={handleClose}
+          className="absolute top-2 right-2 sm:top-4 sm:right-4 md:top-8 md:right-8 z-30 group"
+          aria-label="Close"
+        >
+          <span className="text-[10px] sm:text-xs md:text-sm font-light text-neutral-400 group-hover:text-neutral-900 transition-colors font-equitan">
+            Close
+          </span>
+        </button>
 
-        {/* Stats Row */}
-        <div className="flex gap-2 sm:gap-4 md:gap-10 mb-2 animate-in pb-2 sm:pb-4 md:pb-8 border-b border-neutral-200">
-          <div>
-            <p className="text-sm sm:text-xl md:text-3xl font-bold text-neutral-900 font-equitan">
-              {PROJECTS.length}+
-            </p>
-            <p className="text-[8px] sm:text-xs md:text-sm font-light text-neutral-400 font-equitan">
+        {/* Content */}
+        <div
+          ref={contentRef}
+          className="h-full overflow-y-auto px-2 py-3 sm:px-4 sm:py-6 md:px-10 md:py-12 scrollbar-hide"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {/* Hero Header */}
+          <div className="mb-2 sm:mb-4 md:mb-8 animate-in">
+            <h1 className="text-base sm:text-2xl md:text-4xl lg:text-5xl font-bold text-neutral-900 font-equitan leading-tight">
               Projects
+            </h1>
+            <p className="text-[10px] sm:text-sm md:text-lg font-light text-neutral-400 font-equitan mt-0.5 sm:mt-1 md:mt-2">
+              Selected works & experiments
             </p>
           </div>
-          <div>
-            <p className="text-sm sm:text-xl md:text-3xl font-bold text-neutral-400 font-equitan">
-              Full Stack
-            </p>
-            <p className="text-[8px] sm:text-xs md:text-sm font-light text-neutral-400 font-equitan">
-              Focus
-            </p>
-          </div>
-          <div>
-            <p className="text-sm sm:text-xl md:text-3xl font-bold text-neutral-400 font-equitan">
-              2025
-            </p>
-            <p className="text-[8px] sm:text-xs md:text-sm font-light text-neutral-400 font-equitan">
-              Latest
-            </p>
-          </div>
-        </div>
 
-        {/* All Projects */}
-        <div className="space-y-4">
-          {[...PROJECTS].reverse().map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </div>
+          {/* Stats Row */}
+          <div className="flex gap-2 sm:gap-4 md:gap-10 mb-2 animate-in pb-2 sm:pb-4 md:pb-8 border-b border-neutral-200">
+            <div>
+              <p className="text-sm sm:text-xl md:text-3xl font-bold text-neutral-900 font-equitan">
+                {PROJECTS.length}+
+              </p>
+              <p className="text-[8px] sm:text-xs md:text-sm font-light text-neutral-400 font-equitan">
+                Projects
+              </p>
+            </div>
+            <div>
+              <p className="text-sm sm:text-xl md:text-3xl font-bold text-neutral-400 font-equitan">
+                Full Stack
+              </p>
+              <p className="text-[8px] sm:text-xs md:text-sm font-light text-neutral-400 font-equitan">
+                Focus
+              </p>
+            </div>
+            <div>
+              <p className="text-sm sm:text-xl md:text-3xl font-bold text-neutral-400 font-equitan">
+                2025
+              </p>
+              <p className="text-[8px] sm:text-xs md:text-sm font-light text-neutral-400 font-equitan">
+                Latest
+              </p>
+            </div>
+          </div>
 
-        {/* Footer */}
-        <div className="h-24" />
-        <div className="fixed bottom-6 left-10 animate-in">
-          <p className="text-sm font-light text-neutral-400 font-equitan">
-            Press <span className="font-bold text-neutral-600">ESC</span> to
-            return
-          </p>
+          {/* All Projects */}
+          <div className="space-y-4">
+            {[...PROJECTS].reverse().map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                onImageClick={openImageOverlay}
+              />
+            ))}
+          </div>
+
+          {/* Footer */}
+          <div className="h-24" />
+          <div className="fixed bottom-6 left-10 animate-in">
+            <p className="text-sm font-light text-neutral-400 font-equitan">
+              Press <span className="font-bold text-neutral-600">ESC</span> to
+              return
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -390,10 +605,14 @@ interface Project {
   images?: string[];
 }
 
-function ProjectCard({ project }: { project: Project }) {
+function ProjectCard({
+  project,
+  onImageClick,
+}: {
+  project: Project;
+  onImageClick: (project: Project, imageIndex: number) => void;
+}) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isImageOverlayOpen, setIsImageOverlayOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
   const toggleExpand = () => {
@@ -401,47 +620,8 @@ function ProjectCard({ project }: { project: Project }) {
   };
 
   const openImageOverlay = (index: number) => {
-    setCurrentImageIndex(index);
-    setIsImageOverlayOpen(true);
+    onImageClick(project, index);
   };
-
-  const closeImageOverlay = () => {
-    setIsImageOverlayOpen(false);
-  };
-
-  const nextImage = () => {
-    if (project.images && currentImageIndex < project.images.length - 1) {
-      setCurrentImageIndex(currentImageIndex + 1);
-    }
-  };
-
-  const prevImage = () => {
-    if (currentImageIndex > 0) {
-      setCurrentImageIndex(currentImageIndex - 1);
-    }
-  };
-
-  // Keyboard navigation for image overlay
-  useEffect(() => {
-    if (!isImageOverlayOpen) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-        if (currentImageIndex > 0) {
-          setCurrentImageIndex(currentImageIndex - 1);
-        }
-      } else if (e.key === "ArrowRight") {
-        if (project.images && currentImageIndex < project.images.length - 1) {
-          setCurrentImageIndex(currentImageIndex + 1);
-        }
-      } else if (e.key === "Escape") {
-        closeImageOverlay();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isImageOverlayOpen, currentImageIndex, project.images]);
 
   useEffect(() => {
     if (!contentRef.current) return;
@@ -671,105 +851,6 @@ function ProjectCard({ project }: { project: Project }) {
               </div>
             )}
 
-            {/* Full-screen Image Overlay */}
-            {isImageOverlayOpen && project.images && (
-              <div
-                className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center"
-                onClick={closeImageOverlay}
-              >
-                {/* Close button */}
-                <button
-                  onClick={closeImageOverlay}
-                  className="absolute top-6 right-6 text-white hover:text-neutral-300 transition-colors z-50"
-                  aria-label="Close"
-                >
-                  <svg
-                    className="w-8 h-8"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-
-                {/* Navigation buttons - Outside image */}
-                {project.images.length > 1 && (
-                  <>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        prevImage();
-                      }}
-                      disabled={currentImageIndex === 0}
-                      className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all z-50"
-                      aria-label="Previous image"
-                    >
-                      <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15 19l-7-7 7-7"
-                        />
-                      </svg>
-                    </button>
-
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        nextImage();
-                      }}
-                      disabled={currentImageIndex === project.images.length - 1}
-                      className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all z-50"
-                      aria-label="Next image"
-                    >
-                      <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </button>
-                  </>
-                )}
-
-                {/* Image container */}
-                <div
-                  className="relative max-h-[90vh] max-w-[90vw] flex items-center justify-center"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <img
-                    src={`/projectImages/${project.images[currentImageIndex]}`}
-                    alt={`${project.title} - Image ${currentImageIndex + 1}`}
-                    className="max-h-[90vh] max-w-full object-contain"
-                  />
-
-                  {/* Image counter */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-black bg-opacity-50 rounded-full text-white text-sm font-equitan">
-                    {currentImageIndex + 1} / {project.images.length}
-                  </div>
-                </div>
-              </div>
-            )}
-
             {/* About Section */}
             <div>
               <h4 className="text-sm font-bold text-neutral-900 font-equitan mb-2">
@@ -867,41 +948,58 @@ function ProjectCard({ project }: { project: Project }) {
                   </a>
                 )}
                 {project.repositories &&
-                  project.repositories.map((repo, index) => (
-                    <a
-                      key={index}
-                      href={repo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm font-light text-neutral-900 hover:text-neutral-600 font-equitan transition-colors group/link"
-                    >
-                      <svg
-                        className="w-5 h-5"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                      </svg>
-                      <span>
-                        {index === 0
+                  project.repositories.map((repo, index) => {
+                    const isHuggingFace = repo.includes("huggingface.co");
+                    const getRepoLabel = () => {
+                      if (isHuggingFace) return "OCR Service";
+                      if (project.repositories!.length === 2) {
+                        return index === 0
                           ? "Backend Repository"
-                          : "Frontend Repository"}
-                      </span>
-                      <svg
-                        className="w-4 h-4 group-hover/link:translate-x-1 transition-transform"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
+                          : "Frontend Repository";
+                      }
+                      if (project.repositories!.length === 3) {
+                        if (index === 0) return "Frontend Repository";
+                        if (index === 1) return "Backend Repository";
+                        return "OCR Service";
+                      }
+                      return `Repository ${index + 1}`;
+                    };
+                    return (
+                      <a
+                        key={index}
+                        href={repo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-sm font-light text-neutral-900 hover:text-neutral-600 font-equitan transition-colors group/link"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
-                        />
-                      </svg>
-                    </a>
-                  ))}
+                        {isHuggingFace ? (
+                          <Fullscreen className="w-5 h-5" />
+                        ) : (
+                          <svg
+                            className="w-5 h-5"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                          </svg>
+                        )}
+                        <span>{getRepoLabel()}</span>
+                        <svg
+                          className="w-4 h-4 group-hover/link:translate-x-1 transition-transform"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+                          />
+                        </svg>
+                      </a>
+                    );
+                  })}
                 {project.website && (
                   <a
                     href={project.website}
