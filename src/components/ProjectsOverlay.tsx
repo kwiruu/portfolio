@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import { useStore } from "../store/useStore";
 import gsap from "gsap";
-import { Cog, Fullscreen } from "lucide-react";
+import { Fullscreen } from "lucide-react";
 
 // Project data
 const PROJECTS = [
