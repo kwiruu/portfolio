@@ -1,0 +1,6 @@
+# robots.txt for Keiru Cabili Portfolio
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://keiru.dev/sitemap.xml
