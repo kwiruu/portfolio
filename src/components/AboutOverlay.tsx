@@ -21,6 +21,7 @@ import profileImage from "../assets/me.png";
 import citLogo from "../assets/education/citlogo.png";
 import dvrmLogo from "../assets/education/DVRMNHSlogo.png";
 import jobtarget from "../assets/education/jobtarget.png";
+import symphLogo from "../assets/education/symph.png";
 import rizwoodsLogo from "../assets/education/rizwoods.png";
 import ucmetcLogo from "../assets/education/ucmetc.png";
 
@@ -39,6 +40,12 @@ const PIXEL_ARTS = [
 
 // Career & education timeline
 const TIMELINE = [
+  {
+    year: "Jan - Mar 2026",
+    title: "Full Stack Developer Intern",
+    org: "Symph",
+    location: "Cebu City, Philippines",
+  },
   {
     year: "May - Oct 2025",
     title: "Software Developer Intern",
@@ -87,6 +94,7 @@ const TIMELINE_LOGOS: Record<string, string> = {
   "Cebu Institute of Technology - University": citLogo,
   "Don Vicente Rama Memorial National High School": dvrmLogo,
   "Talleco JobTarget Inc.": jobtarget,
+  "Symph": symphLogo,
   "Rizwoods Colleges": rizwoodsLogo,
   "University of Cebu - METC": ucmetcLogo,
   "Don Vicente Rama Memorial Elementary School": dvrmLogo,
