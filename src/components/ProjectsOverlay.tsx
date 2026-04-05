@@ -145,32 +145,6 @@ const PROJECTS = [
     ],
   },
   {
-    id: "hum-ai",
-    title: "HUM.AI",
-    description:
-      "AI-powered rice quality grading system using CNN and NIR imaging technology. Automated grading tool aligned with Philippine National Standards (PNS/BAFS-290:2019) for accurate quality assessment.",
-    about:
-      "Hum.AI is an automated rice grading web application that leverages Convolutional Neural Networks (CNN) and Near-Infrared (NIR) imaging to assess rice grain quality according to Philippine National Standards (PNS/BAFS-290:2019). The platform features a React-based frontend built with Vite and TypeScript, offering an intuitive interface for uploading rice grain images or capturing them in real-time through device camera selection. The FastAPI backend processes images through a CNN model to generate comprehensive grading metrics including moisture content, grain size uniformity, and quality classification. Results are displayed through an interactive radar chart visualization using Recharts, providing users with a clear overview of key quality indicators. The system generates exportable JSON reports for documentation and compliance purposes. With its focus on automation and standardization, Hum.AI streamlines the rice grading process, making quality assessment faster, more consistent, and aligned with industry standards.",
-    tech: ["React", "TypeScript", "Python", "FastAPI", "JavaScript"],
-    libraries: [
-      "Vite",
-      "Tailwind CSS",
-      "Recharts",
-      "Lucide React",
-      "React Spinners",
-      "CORS Middleware",
-    ],
-    tools: ["TypeScript Compiler", "Vite", "Git", "Python Virtual Environment"],
-    year: "2025",
-    repositories: [
-      "https://github.com/One-Team-One-Goal/hum.ai-server",
-      "https://github.com/One-Team-One-Goal/hum.ai-ui",
-    ],
-    Website: "https://www.hum-ai.app/",
-    featured: true,
-    images: ["hum-ai.png", "hum-ai1.png", "hum-ai2.png", "hum-ai3.png"],
-  },
-  {
     id: "bitwise",
     title: "BITWISE",
     description:
@@ -288,6 +262,56 @@ const PROJECTS = [
       "kwentamo5.png",
       "kwentamo6.png",
     ],
+  },
+  {
+    id: "hum-ai",
+    title: "HUM.AI",
+    description:
+      "AI-powered rice quality grading system using CNN and NIR imaging technology. Automated grading tool aligned with Philippine National Standards (PNS/BAFS-290:2019) for accurate quality assessment.",
+    about:
+      "Hum.AI is an automated rice grading web application that leverages Convolutional Neural Networks (CNN) and Near-Infrared (NIR) imaging to assess rice grain quality according to Philippine National Standards (PNS/BAFS-290:2019). The platform features a React-based frontend built with Vite and TypeScript, offering an intuitive interface for uploading rice grain images or capturing them in real-time through device camera selection. The FastAPI backend processes images through a CNN model to generate comprehensive grading metrics including moisture content, grain size uniformity, and quality classification. Results are displayed through an interactive radar chart visualization using Recharts, providing users with a clear overview of key quality indicators. The system generates exportable JSON reports for documentation and compliance purposes. With its focus on automation and standardization, Hum.AI streamlines the rice grading process, making quality assessment faster, more consistent, and aligned with industry standards.",
+    tech: ["React", "TypeScript", "Python", "FastAPI", "JavaScript"],
+    libraries: [
+      "Vite",
+      "Tailwind CSS",
+      "Recharts",
+      "Lucide React",
+      "React Spinners",
+      "CORS Middleware",
+    ],
+    tools: ["TypeScript Compiler", "Vite", "Git", "Python Virtual Environment"],
+    year: "2025",
+    repositories: [
+      "https://github.com/One-Team-One-Goal/hum.ai-server",
+      "https://github.com/One-Team-One-Goal/hum.ai-ui",
+    ],
+    website: "https://www.hum-ai.app/",
+    featured: true,
+    images: [
+      "hum-ai1.png",
+      "hum-ai2.png",
+      "hum-ai3.png",
+      "hum-ai4.png",
+      "hum-ai5.png",
+    ],
+  },
+  {
+    id: "taki-cli",
+    title: "TAKI CLI",
+    description:
+      "Terminal dashboard for orchestrating multiple local services from a single command. Includes interactive setup, live multi-pane logs, fast service restart, and themeable layouts.",
+    about:
+      "Taki CLI is a developer tooling project that centralizes local service orchestration into one terminal-first workflow. With `taki init`, users generate a validated `taki.json` using an interactive wizard with live config preview, back navigation, and optional script wiring in `package.json`. With `taki run`, teams can launch and monitor multiple services in one place, inspect logs in configurable layouts (single, split, or grid), restart focused services instantly, and switch themes without leaving the dashboard. The CLI also includes commands for config inspection, quick service registration, and version checks. Built for day-to-day DX, Taki emphasizes reliable startup sequencing, readable real-time output, and minimal setup friction for multi-service projects.",
+    tech: ["TypeScript", "Node.js", "JavaScript", "CLI"],
+    libraries: ["Ink", "React", "Commander", "Zod", "Chalk"],
+    tools: ["npm", "ESLint", "Jest", "GitHub Actions", "Release Please"],
+    year: "2026",
+    repository: "https://github.com/kwiruu/taki-cli",
+    website: "https://taki-cli.tech/",
+    packageUrl: "https://www.npmjs.com/package/@kwiruu/taki-cli",
+    featured: true,
+    video: "taki1.mp4",
+    images: ["taki2.png", "taki3.png", "taki4.png"],
   },
 ];
 
@@ -556,7 +580,7 @@ export default function ProjectsOverlay() {
             </div>
             <div>
               <p className="text-sm sm:text-xl md:text-3xl font-bold text-neutral-400 font-equitan">
-                2025
+                2026
               </p>
               <p className="text-[8px] sm:text-xs md:text-sm font-light text-neutral-400 font-equitan">
                 Latest
@@ -601,7 +625,9 @@ interface Project {
   repository?: string;
   repositories?: string[];
   website?: string;
+  packageUrl?: string;
   featured?: boolean;
+  video?: string;
   images?: string[];
 }
 
@@ -712,6 +738,21 @@ function ProjectCard({
           style={{ height: 0, opacity: 0 }}
         >
           <div className="mt-6 ml-14 space-y-6">
+            {project.video && (
+              <div className="w-full">
+                <video
+                  src={`/projectImages/${project.video}`}
+                  autoPlay
+                  muted
+                  playsInline
+                  loop
+                  controls
+                  preload="metadata"
+                  className="w-full h-auto rounded-lg border border-neutral-200 shadow-sm"
+                />
+              </div>
+            )}
+
             {/* Project Image Gallery - Facebook-style collage */}
             {project.images && project.images.length > 0 && (
               <div className="w-full">
@@ -915,7 +956,8 @@ function ProjectCard({
             {/* Links Section */}
             {(project.repository ||
               project.repositories ||
-              project.website) && (
+              project.website ||
+              project.packageUrl) && (
               <div className="flex flex-wrap gap-4">
                 {project.repository && (
                   <a
@@ -1024,6 +1066,50 @@ function ProjectCard({
                       <path d="M2 12h20" />
                     </svg>
                     <span>Visit Website</span>
+                    <svg
+                      className="w-4 h-4 group-hover/link:translate-x-1 transition-transform"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+                      />
+                    </svg>
+                  </a>
+                )}
+                {project.packageUrl && (
+                  <a
+                    href={project.packageUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm font-light text-neutral-900 hover:text-neutral-600 font-equitan transition-colors group/link"
+                  >
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      strokeLinejoin="round"
+                      strokeMiterlimit={2}
+                    >
+                      <g fillRule="nonzero">
+                        <path
+                          d="M10.999 500.999v-490h490v490h-490z"
+                          fill="#c12127"
+                        />
+                        <path
+                          d="M102.874 102.874h306.25v306.25h-61.25v-245h-91.875v245H102.874v-306.25z"
+                          fill="#fff"
+                        />
+                      </g>
+                    </svg>
+                    <span>View Package</span>
                     <svg
                       className="w-4 h-4 group-hover/link:translate-x-1 transition-transform"
                       fill="none"

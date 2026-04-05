@@ -10,6 +10,10 @@ const MOVEMENT_BOUNDS = {
 };
 
 const SENSITIVITY = 0.004;
+const LOOK_REFERENCE_FPS = 60;
+const MAX_FRAME_DELTA = 1 / 30;
+const DESKTOP_LOOK_SCALE = 1;
+const TOUCH_LOOK_SCALE = 1;
 
 export default function Controls() {
   const { camera, gl } = useThree();
@@ -29,6 +33,8 @@ export default function Controls() {
 
   const velocity = useRef(new THREE.Vector3());
   const direction = useRef(new THREE.Vector3());
+  const mouseLookDelta = useRef({ x: 0, y: 0 });
+  const touchLookDelta = useRef({ x: 0, y: 0 });
 
   // Track viewMode in a ref so event listeners can access current value
   const viewModeRef = useRef(viewMode);
@@ -86,14 +92,8 @@ export default function Controls() {
     const onMouseMove = (event: MouseEvent) => {
       if (document.pointerLockElement !== gl.domElement) return;
 
-      camera.rotation.y -= event.movementX * SENSITIVITY;
-      camera.rotation.x -= event.movementY * SENSITIVITY;
-
-      // Clamp pitch (look up/down limit)
-      camera.rotation.x = Math.max(
-        -Math.PI / 2,
-        Math.min(Math.PI / 2, camera.rotation.x)
-      );
+      mouseLookDelta.current.x += event.movementX;
+      mouseLookDelta.current.y += event.movementY;
     };
 
     const onPointerLockChange = () => {
@@ -254,12 +254,8 @@ export default function Controls() {
       lastX = touch.clientX;
       lastY = touch.clientY;
 
-      camera.rotation.y -= deltaX * SENSITIVITY;
-      camera.rotation.x -= deltaY * SENSITIVITY;
-      camera.rotation.x = Math.max(
-        -Math.PI / 2,
-        Math.min(Math.PI / 2, camera.rotation.x)
-      );
+      touchLookDelta.current.x += deltaX;
+      touchLookDelta.current.y += deltaY;
     };
 
     const onTouchEnd = (e: TouchEvent) => {
@@ -289,6 +285,35 @@ export default function Controls() {
 
   // Movement logic
   useFrame((_, delta) => {
+    const effectiveDelta = Math.min(delta, MAX_FRAME_DELTA);
+
+    const lookDeltaMultiplier = effectiveDelta * LOOK_REFERENCE_FPS;
+    const desktopYaw =
+      mouseLookDelta.current.x * SENSITIVITY * DESKTOP_LOOK_SCALE;
+    const desktopPitch =
+      mouseLookDelta.current.y * SENSITIVITY * DESKTOP_LOOK_SCALE;
+    const touchYaw = touchLookDelta.current.x * SENSITIVITY * TOUCH_LOOK_SCALE;
+    const touchPitch =
+      touchLookDelta.current.y * SENSITIVITY * TOUCH_LOOK_SCALE;
+
+    if (
+      desktopYaw !== 0 ||
+      desktopPitch !== 0 ||
+      touchYaw !== 0 ||
+      touchPitch !== 0
+    ) {
+      camera.rotation.y -= (desktopYaw + touchYaw) * lookDeltaMultiplier;
+      camera.rotation.x -= (desktopPitch + touchPitch) * lookDeltaMultiplier;
+      camera.rotation.x = Math.max(
+        -Math.PI / 2,
+        Math.min(Math.PI / 2, camera.rotation.x),
+      );
+      mouseLookDelta.current.x = 0;
+      mouseLookDelta.current.y = 0;
+      touchLookDelta.current.x = 0;
+      touchLookDelta.current.y = 0;
+    }
+
     if (!isMobileRef.current && document.pointerLockElement !== gl.domElement)
       return;
 
@@ -312,8 +337,8 @@ export default function Controls() {
     direction.current.normalize();
 
     // Apply movement relative to camera direction
-    const moveX = direction.current.x * speed * delta;
-    const moveZ = direction.current.z * speed * delta;
+    const moveX = direction.current.x * speed * effectiveDelta;
+    const moveZ = direction.current.z * speed * effectiveDelta;
 
     // Get camera's forward and right vectors (on XZ plane)
     const cameraDirection = new THREE.Vector3();
@@ -358,7 +383,7 @@ export default function Controls() {
     }
 
     // Apply damping
-    velocity.current.multiplyScalar(1 - dampingFactor * delta);
+    velocity.current.multiplyScalar(1 - dampingFactor * effectiveDelta);
 
     // Keep camera above ground
     if (camera.position.y < 1.7) {
@@ -369,14 +394,14 @@ export default function Controls() {
     camera.position.setX(
       Math.max(
         -MOVEMENT_BOUNDS.x,
-        Math.min(MOVEMENT_BOUNDS.x, camera.position.x)
-      )
+        Math.min(MOVEMENT_BOUNDS.x, camera.position.x),
+      ),
     );
     camera.position.setZ(
       Math.max(
         -MOVEMENT_BOUNDS.z,
-        Math.min(MOVEMENT_BOUNDS.z, camera.position.z)
-      )
+        Math.min(MOVEMENT_BOUNDS.z, camera.position.z),
+      ),
     );
   });
 

@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, type PointerEvent } from "react";
 import { useStore } from "../store/useStore";
 import enterKey from "../assets/enter-key.svg";
 
+const JOYSTICK_VIRTUAL_RADIUS = 56;
+
 function checkIsMobile(): boolean {
   if (typeof window === "undefined") return false;
   // Check for touch capability
@@ -13,7 +15,7 @@ function checkIsMobile(): boolean {
   // Check user agent for mobile devices
   const uaMobile =
     /Mobi|Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
+      navigator.userAgent,
     );
   // Consider it mobile if touch-capable OR has coarse pointer OR is a known mobile UA
   return touchCapable || coarse || smallScreen || uaMobile;
@@ -102,12 +104,25 @@ export default function MobileControlsOverlay() {
     const dx = clientX - centerX;
     const dy = clientY - centerY;
 
-    const limit = rect.width / 2;
-    const clampedX = Math.max(-limit, Math.min(limit, dx));
-    const clampedY = Math.max(-limit, Math.min(limit, dy));
+    const realRadius = rect.width / 2;
+    if (realRadius <= 0) return;
 
-    const normX = clampedX / limit;
-    const normY = clampedY / limit;
+    // Map to a fixed virtual radius so movement intent remains consistent across sizes.
+    const scaleToVirtual = JOYSTICK_VIRTUAL_RADIUS / realRadius;
+    const virtualDx = dx * scaleToVirtual;
+    const virtualDy = dy * scaleToVirtual;
+    const distance = Math.hypot(virtualDx, virtualDy);
+    const clampedDistance = Math.min(distance, JOYSTICK_VIRTUAL_RADIUS);
+    const angle = Math.atan2(virtualDy, virtualDx);
+
+    const clampedVirtualX = Math.cos(angle) * clampedDistance;
+    const clampedVirtualY = Math.sin(angle) * clampedDistance;
+    const normX = clampedVirtualX / JOYSTICK_VIRTUAL_RADIUS;
+    const normY = clampedVirtualY / JOYSTICK_VIRTUAL_RADIUS;
+
+    // Convert back to visual knob offset in real pixels.
+    const clampedX = clampedVirtualX / scaleToVirtual;
+    const clampedY = clampedVirtualY / scaleToVirtual;
 
     // Update knob position directly
     knobRef.current.style.transform = `translate(calc(-50% + ${clampedX}px), calc(-50% + ${clampedY}px))`;

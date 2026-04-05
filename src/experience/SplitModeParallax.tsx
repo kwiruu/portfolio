@@ -63,7 +63,7 @@ export default function SplitModeParallax() {
     };
   }, [viewMode, splitModeContent, camera]);
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (!isActive.current) return;
 
     const xOffset = targetOffset.current.x;
@@ -77,7 +77,8 @@ export default function SplitModeParallax() {
     targetEuler.current.x += -yOffset * MAX_ROTATION_OFFSET * 0.6;
 
     targetQuaternion.current.setFromEuler(targetEuler.current);
-    camera.quaternion.slerp(targetQuaternion.current, SMOOTHING);
+    const frameAdjustedSmoothing = 1 - Math.pow(1 - SMOOTHING, delta * 60);
+    camera.quaternion.slerp(targetQuaternion.current, frameAdjustedSmoothing);
   });
 
   return null;
