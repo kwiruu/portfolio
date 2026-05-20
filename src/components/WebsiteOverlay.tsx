@@ -378,14 +378,26 @@ export default function WebsiteOverlay() {
               angle={1}
               penumbra={0.2}
               intensity={6}
+              distance={12}
               color="#ffffff"
               castShadow
             />
-            <pointLight position={[1, 0.5, 2]} intensity={3} color="#ffffff" />
-            <pointLight position={[-1, 0.5, 2]} intensity={3} color="#ffffff" />
+            <pointLight
+              position={[1, 0.5, 2]}
+              intensity={3}
+              distance={10}
+              color="#ffffff"
+            />
+            <pointLight
+              position={[-1, 0.5, 2]}
+              intensity={3}
+              distance={10}
+              color="#ffffff"
+            />
             <pointLight
               position={[0, -0.5, 2]}
               intensity={2.5}
+              distance={10}
               color="#ffffff"
             />
             <KingPiece

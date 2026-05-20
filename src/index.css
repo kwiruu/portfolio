@@ -159,25 +159,6 @@
     --radius: 0.5rem;
     --grayz: #666666;
   }
-  /* Inter Font Family */
-  @font-face {
-    font-family: "Inter";
-    src: url("https://fonts.gstatic.com/s/inter/v12/UcCO3H6m3Fh5sE6Xy3s.woff2")
-      format("woff2");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: "Inter";
-    src: url("https://fonts.gstatic.com/s/inter/v12/UcCO3H6m3Fh5sE6Xy3s.woff2")
-      format("woff2");
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-  }
-
   /* Utility class for Equitan Sans font */
   .font-equitan {
     font-family: "Equitan Sans", "Inter", system-ui, -apple-system, sans-serif;
